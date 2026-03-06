@@ -227,6 +227,7 @@
     .service-lists ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
     .service-lists li { display: flex; align-items: center; gap: 10px; font-weight: 500; letter-spacing: 0.15px; }
     .service-lists i { font-size: 14px; color: #fff; }
+    .service-item { cursor: pointer; }
     /* portfolio */
     .portfolio-card {
       background: var(--card);
@@ -285,6 +286,92 @@
       .hero-content { padding: 36px 26px; }
       .side-pill { display: none; }
     }
+    /* admin */
+    .admin-toggle {
+      position: fixed;
+      left: 16px;
+      bottom: 16px;
+      z-index: 1060;
+      border-radius: 50px;
+      padding: 10px 14px;
+      box-shadow: 0 10px 26px rgba(0,0,0,0.16);
+      background: var(--red);
+      color: #fff;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+    }
+    .admin-panel {
+      position: fixed;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: min(420px, 100%);
+      background: var(--card);
+      color: var(--text);
+      box-shadow: -14px 0 30px rgba(0,0,0,0.18);
+      transform: translateX(100%);
+      transition: transform 0.24s ease;
+      z-index: 1059;
+      border-left: 1px solid var(--card-border);
+      display: flex;
+      flex-direction: column;
+    }
+    .admin-panel.show { transform: translateX(0); }
+    .admin-panel header {
+      padding: 16px;
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .admin-panel .admin-body {
+      flex: 1;
+      overflow: auto;
+      padding: 16px;
+      display: grid;
+      gap: 12px;
+    }
+    .admin-panel .field label {
+      font-weight: 600;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+    .admin-panel .field input,
+    .admin-panel .field textarea,
+    .admin-panel .field select {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid var(--card-border);
+      padding: 10px 12px;
+      background: var(--surface);
+      color: inherit;
+    }
+    .admin-panel footer {
+      border-top: 1px solid var(--card-border);
+      padding: 12px 16px;
+      background: var(--card);
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+      margin-top: 0;
+      color: inherit;
+    }
+    .admin-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      background: rgba(225,0,0,0.12);
+      color: var(--red);
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(225,0,0,0.16);
+    }
 </style>
 </head>
 <body data-bs-spy="scroll" data-bs-target="#mainNav" data-bs-offset="90" tabindex="0">
@@ -295,7 +382,7 @@
         <span class="logo-box" style="width:38px;height:38px; border-radius:10px; background:#e10000; position:relative; overflow:hidden;">
           <span style="position:absolute; inset:0; background: linear-gradient(135deg, #fff 0 50%, transparent 50% 100%); mix-blend-mode:screen;"></span>
         </span>
-        SK Graphics
+        <span data-edit="siteName">SK Graphics</span>
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
         <span class="navbar-toggler-icon"></span>
@@ -325,18 +412,18 @@
     <section class="hero mt-3" id="top">
       <div class="hero-content row align-items-center g-4">
         <div class="col-lg-7">
-          <div class="hero-badge" data-i18n="hero_badge"><i class="bi bi-palette"></i> Graphic Design • Printing • Digital</div>
-          <h1 data-i18n="hero_title">Print-perfect designs that make your brand impossible to ignore.</h1>
-          <p class="lead" data-i18n="hero_subtitle">From wedding cards to large-format signage and digital campaigns, we craft cohesive visuals, premium materials, and sharp prints that stay true to your story.</p>
+          <div class="hero-badge" data-i18n="hero_badge" data-edit="hero_badge"><i class="bi bi-palette"></i> Graphic Design • Printing • Digital</div>
+          <h1 data-i18n="hero_title" data-edit="hero_title">Print-perfect designs that make your brand impossible to ignore.</h1>
+          <p class="lead" data-i18n="hero_subtitle" data-edit="hero_subtitle">From wedding cards to large-format signage and digital campaigns, we craft cohesive visuals, premium materials, and sharp prints that stay true to your story.</p>
           <div class="d-flex flex-wrap gap-3">
-            <a class="btn btn-red px-4 py-2" href="#contact" data-i18n="cta_quote">Get a Quote</a>
-            <a class="btn btn-outline-light px-4 py-2 border-0" href="#portfolio" data-i18n="cta_work">View Recent Work</a>
+            <a class="btn btn-red px-4 py-2" href="#contact" data-i18n="cta_quote" data-edit="cta_quote">Get a Quote</a>
+            <a class="btn btn-outline-light px-4 py-2 border-0" href="#portfolio" data-i18n="cta_work" data-edit="cta_work">View Recent Work</a>
           </div>
           <div class="hero-card mt-4">
             <div class="logo-box"></div>
             <div class="text">
-              <div class="fw-semibold">Sumit &middot; Graphic Designer</div>
-              <div class="small text-white-50">78145-69533 &bull; sumitprince493@gmail.com</div>
+              <div class="fw-semibold" data-edit="hero_card_name">Sumit &middot; Graphic Designer</div>
+              <div class="small text-white-50"><span data-bind="phoneDisplay">78145-69533</span> | <span data-bind="emailText">sumitprince493@gmail.com</span></div>
             </div>
           </div>
         </div>
@@ -345,20 +432,20 @@
             <div class="d-flex align-items-center gap-3 border-bottom pb-3">
               <div class="bg-danger text-white rounded-circle d-flex align-items-center justify-content-center" style="width:52px;height:52px;"><i class="bi bi-person-fill fs-4"></i></div>
               <div>
-                <div class="fw-bold fs-5">Sumit</div>
-              <div class="text-muted small">Graphic Designer</div>
+                <div class="fw-bold fs-5" data-edit="card_name">Sumit</div>
+              <div class="text-muted small" data-edit="card_role">Graphic Designer</div>
               </div>
             </div>
             <ul class="list-unstyled mt-3 mb-0">
               <li class="d-flex align-items-center gap-2 py-2 border-bottom flex-wrap">
-                <i class="bi bi-telephone-fill text-danger"></i><span class="me-2">78145-69533, 8847560927</span>
-                <button class="btn btn-sm btn-outline-danger copy-btn" type="button" data-copy="78145-69533, 8847560927">Copy</button>
+                <i class="bi bi-telephone-fill text-danger"></i><span class="me-2" data-bind="phoneDisplay">78145-69533, 8847560927</span>
+                <button class="btn btn-sm btn-outline-danger copy-btn" type="button" data-copy="78145-69533, 8847560927" data-copy-phone="true">Copy</button>
               </li>
               <li class="d-flex align-items-center gap-2 py-2 border-bottom flex-wrap">
-                <i class="bi bi-envelope-fill text-danger"></i><span class="me-2">sumitprince493@gmail.com</span>
-                <button class="btn btn-sm btn-outline-danger copy-btn" type="button" data-copy="sumitprince493@gmail.com">Copy</button>
+                <i class="bi bi-envelope-fill text-danger"></i><span class="me-2" data-bind="emailText">sumitprince493@gmail.com</span>
+                <button class="btn btn-sm btn-outline-danger copy-btn" type="button" data-copy="sumitprince493@gmail.com" data-copy-email="true">Copy</button>
               </li>
-              <li class="d-flex align-items-center gap-2 py-2"><i class="bi bi-geo-alt-fill text-danger"></i><span>#6327/A, Sector 56, Chd.</span></li>
+              <li class="d-flex align-items-center gap-2 py-2"><i class="bi bi-geo-alt-fill text-danger"></i><span data-edit="address">#6327/A, Sector 56, Chd.</span></li>
             </ul>
           </div>
         </div>
@@ -375,43 +462,43 @@
         <div class="col-md-6 col-lg-4">
           <div class="service-card h-100">
             <div class="icon"><i class="bi bi-person-vcard"></i></div>
-            <h5 class="fw-semibold mb-1">Cards & Stationery</h5>
-            <div class="fw-bold fs-4 text-danger mb-1">&#8377;2.5 / card</div>
-            <div class="text-muted small mb-3">Visiting cards (300gsm), letterheads, envelopes, invites.</div>
+            <h5 class="fw-semibold mb-1" data-edit="price1_title">Cards & Stationery</h5>
+            <div class="fw-bold fs-4 text-danger mb-1"><span data-edit="price1_amount">&#8377;2.5 / card</span></div>
+            <div class="text-muted small mb-3"><span data-edit="price1_desc">Visiting cards (300gsm), letterheads, envelopes, invites.</span></div>
             <ul class="text-muted small ps-3 mb-3">
               <li>Double-sided, full color</li>
               <li>Matte/Gloss lamination options</li>
               <li>Min. batch: 200 cards</li>
             </ul>
-            <a class="btn btn-red w-100" href="#followup">Request quote</a>
+            <a class="btn btn-red w-100" href="#followup" data-fill-note="Cards & Stationery">Request quote</a>
           </div>
         </div>
         <div class="col-md-6 col-lg-4">
           <div class="service-card h-100 border border-danger-subtle">
             <div class="icon"><i class="bi bi-easel"></i></div>
-            <h5 class="fw-semibold mb-1">Large Format</h5>
-            <div class="fw-bold fs-4 text-danger mb-1">&#8377;45 / sq.ft</div>
-            <div class="text-muted small mb-3">Flex, vinyl, sunboard, standees, backdrops.</div>
+            <h5 class="fw-semibold mb-1" data-edit="price2_title">Large Format</h5>
+            <div class="fw-bold fs-4 text-danger mb-1"><span data-edit="price2_amount">&#8377;45 / sq.ft</span></div>
+            <div class="text-muted small mb-3"><span data-edit="price2_desc">Flex, vinyl, sunboard, standees, backdrops.</span></div>
             <ul class="text-muted small ps-3 mb-3">
               <li>Outdoor-grade inks</li>
               <li>Lamination + eyelets optional</li>
               <li>Install support on request</li>
             </ul>
-            <a class="btn btn-red w-100" href="#followup">Request quote</a>
+            <a class="btn btn-red w-100" href="#followup" data-fill-note="Large Format">Request quote</a>
           </div>
         </div>
         <div class="col-md-6 col-lg-4">
           <div class="service-card h-100">
             <div class="icon"><i class="bi bi-globe"></i></div>
-            <h5 class="fw-semibold mb-1">Digital & Web</h5>
-            <div class="fw-bold fs-4 text-danger mb-1">&#8377;9,999 / site</div>
-            <div class="text-muted small mb-3">Landing pages, brochure sites, banners, social kits.</div>
+            <h5 class="fw-semibold mb-1" data-edit="price3_title">Digital & Web</h5>
+            <div class="fw-bold fs-4 text-danger mb-1"><span data-edit="price3_amount">&#8377;9,999 / site</span></div>
+            <div class="text-muted small mb-3"><span data-edit="price3_desc">Landing pages, brochure sites, banners, social kits.</span></div>
             <ul class="text-muted small ps-3 mb-3">
               <li>Responsive layout</li>
               <li>3–5 page starter pack</li>
               <li>Content & hosting assistance</li>
             </ul>
-            <a class="btn btn-red w-100" href="#followup">Request quote</a>
+            <a class="btn btn-red w-100" href="#followup" data-fill-note="Digital & Web">Request quote</a>
           </div>
         </div>
       </div>
@@ -480,7 +567,7 @@
             <div class="d-flex justify-content-between fw-semibold mt-2">
               <span>Total</span><span id="cartTotal">&#8377;0</span>
             </div>
-            <a class="btn btn-red w-100 mt-3" href="#followup">Checkout with quote</a>
+            <a class="btn btn-red w-100 mt-3" id="checkoutQuote" href="#followup">Checkout with quote</a>
           </div>
         </div>
       </div>
@@ -504,28 +591,28 @@
         <div class="row service-lists gx-4 gy-2">
           <div class="col-md-6">
             <ul>
-              <li><i class="bi bi-caret-right-fill"></i><span class="service-item">Wedding Cards</span></li>
-              <li><i class="bi bi-caret-right-fill"></i><span class="service-item">Visiting Cards</span></li>
-              <li><i class="bi bi-caret-right-fill"></i><span class="service-item">Bill Books</span></li>
-              <li><i class="bi bi-caret-right-fill"></i><span class="service-item">Flex</span></li>
-              <li><i class="bi bi-caret-right-fill"></i><span class="service-item">Sunboard</span></li>
-              <li><i class="bi bi-caret-right-fill"></i><span class="service-item">Vinyl</span></li>
-              <li><i class="bi bi-caret-right-fill"></i><span class="service-item">Letter Heads</span></li>
-              <li><i class="bi bi-caret-right-fill"></i><span class="service-item">Pamphlets</span></li>
-              <li><i class="bi bi-caret-right-fill"></i><span class="service-item">Hindi/Punjabi Typing</span></li>
+              <li><i class="bi bi-caret-right-fill"></i><span class="service-item" data-edit="deal1">Wedding Cards</span></li>
+              <li><i class="bi bi-caret-right-fill"></i><span class="service-item" data-edit="deal2">Visiting Cards</span></li>
+              <li><i class="bi bi-caret-right-fill"></i><span class="service-item" data-edit="deal3">Bill Books</span></li>
+              <li><i class="bi bi-caret-right-fill"></i><span class="service-item" data-edit="deal4">Flex</span></li>
+              <li><i class="bi bi-caret-right-fill"></i><span class="service-item" data-edit="deal5">Sunboard</span></li>
+              <li><i class="bi bi-caret-right-fill"></i><span class="service-item" data-edit="deal6">Vinyl</span></li>
+              <li><i class="bi bi-caret-right-fill"></i><span class="service-item" data-edit="deal7">Letter Heads</span></li>
+              <li><i class="bi bi-caret-right-fill"></i><span class="service-item" data-edit="deal8">Pamphlets</span></li>
+              <li><i class="bi bi-caret-right-fill"></i><span class="service-item" data-edit="deal9">Hindi/Punjabi Typing</span></li>
             </ul>
           </div>
           <div class="col-md-6">
             <ul>
-              <li><i class="bi bi-caret-right-fill"></i><span class="service-item">Brochures</span></li>
-              <li><i class="bi bi-caret-right-fill"></i><span class="service-item">Leaflet</span></li>
-              <li><i class="bi bi-caret-right-fill"></i><span class="service-item">Menu Cards</span></li>
-              <li><i class="bi bi-caret-right-fill"></i><span class="service-item">Stamps</span></li>
-              <li><i class="bi bi-caret-right-fill"></i><span class="service-item">T-shirt Printing</span></li>
-              <li><i class="bi bi-caret-right-fill"></i><span class="service-item">Computer Designing</span></li>
-              <li><i class="bi bi-caret-right-fill"></i><span class="service-item">Screen Printing</span></li>
-              <li><i class="bi bi-caret-right-fill"></i><span class="service-item">Pamphlet Distribution</span></li>
-              <li><i class="bi bi-caret-right-fill"></i><span class="service-item">Website Making</span></li>
+              <li><i class="bi bi-caret-right-fill"></i><span class="service-item" data-edit="deal10">Brochures</span></li>
+              <li><i class="bi bi-caret-right-fill"></i><span class="service-item" data-edit="deal11">Leaflet</span></li>
+              <li><i class="bi bi-caret-right-fill"></i><span class="service-item" data-edit="deal12">Menu Cards</span></li>
+              <li><i class="bi bi-caret-right-fill"></i><span class="service-item" data-edit="deal13">Stamps</span></li>
+              <li><i class="bi bi-caret-right-fill"></i><span class="service-item" data-edit="deal14">T-shirt Printing</span></li>
+              <li><i class="bi bi-caret-right-fill"></i><span class="service-item" data-edit="deal15">Computer Designing</span></li>
+              <li><i class="bi bi-caret-right-fill"></i><span class="service-item" data-edit="deal16">Screen Printing</span></li>
+              <li><i class="bi bi-caret-right-fill"></i><span class="service-item" data-edit="deal17">Pamphlet Distribution</span></li>
+              <li><i class="bi bi-caret-right-fill"></i><span class="service-item" data-edit="deal18">Website Making</span></li>
             </ul>
           </div>
         </div>
@@ -542,28 +629,28 @@
       <div class="row g-4">
         <div class="col-md-6 col-lg-4">
           <div class="portfolio-card">
-            <img src="https://picsum.photos/600/420?1" alt="Luxury wedding invitation design">
+            <img src="https://picsum.photos/600/420?1" data-edit-img="portfolio1" alt="Luxury wedding invitation design">
             <div class="p-3">
-              <div class="fw-semibold">Luxury Wedding Invite</div>
-              <div class="text-muted small">Foil + textured paper · Offset print</div>
+              <div class="fw-semibold"><span data-edit="portfolio1_title">Luxury Wedding Invite</span></div>
+              <div class="text-muted small"><span data-edit="portfolio1_sub">Foil + textured paper � Offset print</span></div>
             </div>
           </div>
         </div>
         <div class="col-md-6 col-lg-4">
           <div class="portfolio-card">
-            <img src="https://picsum.photos/600/420?2" alt="Restaurant menu and tabletop design">
+            <img src="https://picsum.photos/600/420?2" data-edit-img="portfolio2" alt="Restaurant menu and tabletop design">
             <div class="p-3">
-              <div class="fw-semibold">Restaurant Menu Kit</div>
-              <div class="text-muted small">Tri-fold menus, table toppers, digital screens</div>
+              <div class="fw-semibold"><span data-edit="portfolio2_title">Restaurant Menu Kit</span></div>
+              <div class="text-muted small"><span data-edit="portfolio2_sub">Tri-fold menus, table toppers, digital screens</span></div>
             </div>
           </div>
         </div>
         <div class="col-md-6 col-lg-4">
           <div class="portfolio-card">
-            <img src="https://picsum.photos/600/420?3" alt="Retail signage pack with flex and vinyl">
+            <img src="https://picsum.photos/600/420?3" data-edit-img="portfolio3" alt="<span data-edit="portfolio3_title">Retail Signage Pack</span> with flex and vinyl">
             <div class="p-3">
-              <div class="fw-semibold">Retail Signage Pack</div>
-              <div class="text-muted small">Flex hoardings, vinyl wayfinding, window decals</div>
+              <div class="fw-semibold"><span data-edit="portfolio3_title">Retail Signage Pack</span></div>
+              <div class="text-muted small"><span data-edit="portfolio3_sub">Flex hoardings, vinyl wayfinding, window decals</span></div>
             </div>
           </div>
         </div>
@@ -618,11 +705,11 @@
             <div class="d-flex align-items-center gap-2 mb-2">
               <div class="bg-danger text-white rounded-circle d-flex align-items-center justify-content-center" style="width:36px;height:36px;">A</div>
               <div>
-                <div class="fw-semibold">Arjun Khanna</div>
-                <div class="text-muted small">Restaurant Owner</div>
+                <div class="fw-semibold"><span data-edit="test1_name">Arjun Khanna</span></div>
+                <div class="text-muted small"><span data-edit="test1_role">Restaurant Owner</span></div>
               </div>
             </div>
-            <div class="quote">“Menus, signage, and social posts all felt consistent. Loved the quick iterations and print quality.”</div>
+            <div class="quote"><span data-edit="test1_quote">�Menus, signage, and social posts all felt consistent. Loved the quick iterations and print quality.�</span></div>
           </div>
         </div>
         <div class="col-md-6 col-lg-4">
@@ -630,11 +717,11 @@
             <div class="d-flex align-items-center gap-2 mb-2">
               <div class="bg-danger text-white rounded-circle d-flex align-items-center justify-content-center" style="width:36px;height:36px;">S</div>
               <div>
-                <div class="fw-semibold">Simran Gill</div>
-                <div class="text-muted small">Wedding Planner</div>
+                <div class="fw-semibold"><span data-edit="test2_name">Simran Gill</span></div>
+                <div class="text-muted small"><span data-edit="test2_role">Wedding Planner</span></div>
               </div>
             </div>
-            <div class="quote">“Their invitation sets wow guests every time. Foiling and paper picks are spot on.”</div>
+            <div class="quote"><span data-edit="test2_quote">�Their invitation sets wow guests every time. Foiling and paper picks are spot on.�</span></div>
           </div>
         </div>
         <div class="col-md-6 col-lg-4">
@@ -642,11 +729,11 @@
             <div class="d-flex align-items-center gap-2 mb-2">
               <div class="bg-danger text-white rounded-circle d-flex align-items-center justify-content-center" style="width:36px;height:36px;">M</div>
               <div>
-                <div class="fw-semibold">Mandeep Singh</div>
-                <div class="text-muted small">Retailer</div>
+                <div class="fw-semibold"><span data-edit="test3_name">Mandeep Singh</span></div>
+                <div class="text-muted small"><span data-edit="test3_role">Retailer</span></div>
               </div>
             </div>
-            <div class="quote">“Vinyls and flex boards were crisp even up close. Installation was smooth.”</div>
+            <div class="quote"><span data-edit="test3_quote">�Vinyls and flex boards were crisp even up close. Installation was smooth.�</span></div>
           </div>
         </div>
       </div>
@@ -705,12 +792,12 @@
     <section id="contact" class="pb-4">
       <div class="cta d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-3">
         <div>
-          <div class="fw-bold fs-5" data-i18n="cta_ready">Ready to start?</div>
-          <div class="text-white-50 small" data-i18n="cta_ready_sub">Share your requirement and we’ll respond within one business day.</div>
+          <div class="fw-bold fs-5" data-i18n="cta_ready" data-edit="cta_ready">Ready to start?</div>
+          <div class="text-white-50 small" data-i18n="cta_ready_sub" data-edit="cta_ready_sub">Share your requirement and we\u2019ll respond within one business day.</div>
         </div>
         <div class="d-flex flex-column flex-sm-row gap-2 align-items-sm-center">
-          <a class="btn btn-light px-4" href="mailto:sumitprince493@gmail.com"><i class="bi bi-envelope-fill me-2"></i>Email Us</a>
-          <a class="btn btn-dark px-4" href="tel:7814569533"><i class="bi bi-telephone-fill me-2"></i>Call Now</a>
+          <a class="btn btn-light px-4" data-bind="emailHref" href="mailto:sumitprince493@gmail.com"><i class="bi bi-envelope-fill me-2"></i>Email Us</a>
+          <a class="btn btn-dark px-4" data-bind="phoneHref" href="tel:7814569533"><i class="bi bi-telephone-fill me-2"></i>Call Now</a>
         </div>
       </div>
     </section>
@@ -760,7 +847,7 @@
                 </div>
                 <div class="col-12">
                   <label class="form-label fw-semibold">Project notes</label>
-                  <textarea class="form-control" rows="3" placeholder="Quantity, size, material, deadline..." required></textarea>
+                  <textarea class="form-control" id="projectNotes" rows="3" placeholder="Quantity, size, material, deadline..." required></textarea>
                   <div class="invalid-feedback">Please add a short note.</div>
                 </div>
                 <div class="col-12 d-flex justify-content-end">
@@ -782,25 +869,42 @@
             <span class="logo-box" style="width:36px;height:36px; border-radius:9px; background:#e10000; position:relative; overflow:hidden;">
               <span style="position:absolute; inset:0; background: linear-gradient(135deg, #fff 0 50%, transparent 50% 100%); mix-blend-mode:screen;"></span>
             </span>
-            <span>SK Graphics</span>
+            <span data-edit="siteName">SK Graphics</span>
           </div>
         </div>
         <div class="col-md-4 text-md-center">
-          <div class="text-muted small">#6327/A, Sector 56, Chd.</div>
-          <div class="text-muted small">78145-69533 · 8847560927</div>
+          <div class="text-muted small" data-edit="address">#6327/A, Sector 56, Chd.</div>
+          <div class="text-muted small" data-bind="phoneDisplay">78145-69533 � 8847560927</div>
         </div>
         <div class="col-md-4 text-md-end">
-          <a class="me-3" href="mailto:sumitprince493@gmail.com"><i class="bi bi-envelope-fill me-1"></i>Email</a>
-          <a href="tel:7814569533"><i class="bi bi-telephone-fill me-1"></i>Call</a>
+          <a class="me-3" data-bind="emailHref" href="mailto:sumitprince493@gmail.com"><i class="bi bi-envelope-fill me-1"></i>Email</a>
+          <a data-bind="phoneHref" href="tel:7814569533"><i class="bi bi-telephone-fill me-1"></i>Call</a>
         </div>
       </div>
     </div>
   </footer>
 
   <!-- Back to top -->
-  <button id="backTop" class="btn btn-danger rounded-circle" type="button" aria-label="Back to top" style="position:fixed; right:16px; bottom:78px; z-index:1050; width:46px; height:46px; display:none;">
+    <button id="backTop" class="btn btn-danger rounded-circle" type="button" aria-label="Back to top" style="position:fixed; right:16px; bottom:78px; z-index:1050; width:46px; height:46px; display:none;">
     <i class="bi bi-arrow-up-short fs-4"></i>
   </button>
+
+  <button class="admin-toggle" id="adminToggle" type="button"><i class="bi bi-sliders"></i><span>Admin</span></button>
+  <div class="admin-panel" id="adminPanel" aria-label="Content admin panel">
+    <header>
+      <div>
+        <div class="fw-semibold">Content admin</div>
+        <div class="admin-pill"><i class="bi bi-hdd"></i>Local only (saves in this browser)</div>
+      </div>
+      <button class="btn btn-sm btn-outline-secondary" id="closeAdmin" type="button">Close</button>
+    </header>
+    <div class="admin-body" id="adminFields"></div>
+    <footer>
+      <button class="btn btn-outline-secondary btn-sm" id="resetAdmin" type="button">Reset</button>
+      <button class="btn btn-dark btn-sm" id="exportAdmin" type="button">Export</button>
+      <button class="btn btn-red btn-sm" id="saveAdmin" type="button">Save</button>
+    </footer>
+  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
@@ -841,8 +945,8 @@
       const bar = document.createElement('div');
       bar.innerHTML = `
         <div class="d-flex align-items-center gap-2">
-          <a class="btn btn-danger btn-sm" href="tel:7814569533"><i class="bi bi-telephone-fill me-1"></i>Call</a>
-          <a class="btn btn-outline-light btn-sm text-danger bg-white" href="https://wa.me/917814569533" target="_blank" rel="noopener"><i class="bi bi-whatsapp me-1"></i>WhatsApp</a>
+          <a class="btn btn-danger btn-sm" data-bind="phoneHref" href="tel:7814569533"><i class="bi bi-telephone-fill me-1"></i>Call</a>
+          <a class="btn btn-outline-light btn-sm text-danger bg-white" href="https://wa.me/917814569533?text=Hi%20SK%20Graphics%2C%20I%27d%20like%20a%20quote%20for%20my%20printing/design%20project." target="_blank" rel="noopener"><i class="bi bi-whatsapp me-1"></i>WhatsApp</a>
           <a class="btn btn-dark btn-sm" href="#followup"><i class="bi bi-pencil-square me-1"></i>Quote</a>
         </div>`;
       Object.assign(bar.style, {
@@ -873,6 +977,33 @@
           if (match) visible++;
         });
         if (noResults) noResults.classList.toggle('d-none', visible !== 0);
+      });
+    })();
+
+    // Prefill project notes when clicking services or quote links
+    (() => {
+      const note = document.getElementById('projectNotes');
+      if (!note) return;
+      const fill = (text) => {
+        if (!text) return;
+        note.value = text;
+        note.focus();
+        note.closest('form')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      };
+      document.querySelectorAll('.service-item').forEach(el => {
+        el.addEventListener('click', () => fill(el.textContent.trim()));
+      });
+      document.querySelectorAll('[data-fill-note]').forEach(el => {
+        el.addEventListener('click', () => fill(el.getAttribute('data-fill-note') || el.textContent.trim()));
+      });
+      const checkoutBtn = document.getElementById('checkoutQuote');
+      checkoutBtn?.addEventListener('click', () => {
+        try {
+          const cart = JSON.parse(localStorage.getItem('sk_cart') || '[]');
+          if (!cart.length) return;
+          const summary = cart.map(item => `${item.qty} x ${item.name}`).join(', ');
+          fill(`Cart items: ${summary}`);
+        } catch (_) { /* ignore */ }
       });
     })();
 
@@ -1064,9 +1195,177 @@
       const scrollSpy = new bootstrap.ScrollSpy(document.body, { target: '#mainNav', offset: 90 });
       window.addEventListener('resize', () => scrollSpy.refresh());
     });
+      </script>
+  <script>
+    // Content admin (local-only)
+    (() => {
+      const panel = document.getElementById("adminPanel");
+      const toggle = document.getElementById("adminToggle");
+      const closeBtn = document.getElementById("closeAdmin");
+      const saveBtn = document.getElementById("saveAdmin");
+      const resetBtn = document.getElementById("resetAdmin");
+      const exportBtn = document.getElementById("exportAdmin");
+      const listEl = document.getElementById("adminFields");
+      if (!panel || !toggle || !listEl) return;
+
+      const storageKey = "sk_admin_content_v1";
+      const grab = (sel) => (document.querySelector(sel)?.textContent?.trim() || "");
+
+      const fields = [
+        { id: "siteName", label: "Brand name", selector: "[data-edit=\"siteName\"]", type: "text", apply: (v) => { document.querySelectorAll("[data-edit=\"siteName\"]").forEach(el => el.textContent = v); document.title = v + " | Design & Printing Studio"; } },
+        { id: "hero_badge", label: "Hero badge", selector: "[data-edit=\"hero_badge\"]", type: "text" },
+        { id: "hero_title", label: "Hero title", selector: "[data-edit=\"hero_title\"]", type: "textarea" },
+        { id: "hero_subtitle", label: "Hero subtitle", selector: "[data-edit=\"hero_subtitle\"]", type: "textarea" },
+        { id: "cta_quote", label: "Primary CTA", selector: "[data-edit=\"cta_quote\"]", type: "text" },
+        { id: "cta_work", label: "Secondary CTA", selector: "[data-edit=\"cta_work\"]", type: "text" },
+        { id: "hero_card_name", label: "Hero badge line", selector: "[data-edit=\"hero_card_name\"]", type: "text" },
+        { id: "card_name", label: "Profile card name", selector: "[data-edit=\"card_name\"]", type: "text" },
+        { id: "card_role", label: "Profile card role", selector: "[data-edit=\"card_role\"]", type: "text" },
+        { id: "phone", label: "Phone (display)", type: "text", apply: (v) => {
+          document.querySelectorAll("[data-bind=\"phoneDisplay\"]").forEach(el => el.textContent = v);
+          const tel = v.replace(/[^0-9+]/g, "");
+          document.querySelectorAll("[data-bind=\"phoneHref\"]").forEach(el => el.setAttribute("href", "tel:" + tel));
+          document.querySelectorAll("[data-copy-phone]").forEach(el => el.setAttribute("data-copy", v));
+        }, defaultValue: grab("[data-bind=\"phoneDisplay\"]") },
+        { id: "email", label: "Email", type: "text", apply: (v) => {
+          document.querySelectorAll("[data-bind=\"emailText\"]").forEach(el => el.textContent = v);
+          document.querySelectorAll("[data-bind=\"emailHref\"]").forEach(el => el.setAttribute("href", "mailto:" + v));
+          document.querySelectorAll("[data-copy-email]").forEach(el => el.setAttribute("data-copy", v));
+        }, defaultValue: grab("[data-bind=\"emailText\"]") },
+        { id: "address", label: "Address", selector: "[data-edit=\"address\"]", type: "textarea" },
+        { id: "price1_title", label: "Pricing 1 title", selector: "[data-edit=\"price1_title\"]", type: "text" },
+        { id: "price1_amount", label: "Pricing 1 amount", selector: "[data-edit=\"price1_amount\"]", type: "text" },
+        { id: "price1_desc", label: "Pricing 1 description", selector: "[data-edit=\"price1_desc\"]", type: "textarea" },
+        { id: "price2_title", label: "Pricing 2 title", selector: "[data-edit=\"price2_title\"]", type: "text" },
+        { id: "price2_amount", label: "Pricing 2 amount", selector: "[data-edit=\"price2_amount\"]", type: "text" },
+        { id: "price2_desc", label: "Pricing 2 description", selector: "[data-edit=\"price2_desc\"]", type: "textarea" },
+        { id: "price3_title", label: "Pricing 3 title", selector: "[data-edit=\"price3_title\"]", type: "text" },
+        { id: "price3_amount", label: "Pricing 3 amount", selector: "[data-edit=\"price3_amount\"]", type: "text" },
+        { id: "price3_desc", label: "Pricing 3 description", selector: "[data-edit=\"price3_desc\"]", type: "textarea" },
+        { id: "cta_ready", label: "CTA footer title", selector: "[data-edit=\"cta_ready\"]", type: "text" },
+        { id: "cta_ready_sub", label: "CTA footer subtitle", selector: "[data-edit=\"cta_ready_sub\"]", type: "textarea" },
+      ];
+
+      for (let i = 1; i <= 18; i++) {
+        fields.push({ id: `deal${i}`, label: `Service item ${i}`, selector: `[data-edit=\"deal${i}\"]`, type: "text" });
+      }
+      for (let i = 1; i <= 3; i++) {
+        fields.push({ id: `portfolio${i}_img`, label: `Portfolio ${i} image URL`, selector: `[data-edit-img=\"portfolio${i}\"]`, type: "url" });
+        fields.push({ id: `portfolio${i}_title`, label: `Portfolio ${i} title`, selector: `[data-edit=\"portfolio${i}_title\"]`, type: "text" });
+        fields.push({ id: `portfolio${i}_sub`, label: `Portfolio ${i} subtitle`, selector: `[data-edit=\"portfolio${i}_sub\"]`, type: "text" });
+      }
+      for (let i = 1; i <= 3; i++) {
+        fields.push({ id: `test${i}_name`, label: `Testimonial ${i} name`, selector: `[data-edit=\"test${i}_name\"]`, type: "text" });
+        fields.push({ id: `test${i}_role`, label: `Testimonial ${i} role`, selector: `[data-edit=\"test${i}_role\"]`, type: "text" });
+        fields.push({ id: `test${i}_quote`, label: `Testimonial ${i} quote`, selector: `[data-edit=\"test${i}_quote\"]`, type: "textarea" });
+      }
+
+      const defaults = {};
+      fields.forEach(f => {
+        if (f.defaultValue !== undefined) {
+          defaults[f.id] = f.defaultValue;
+          return;
+        }
+        if (f.selector) {
+          const el = document.querySelector(f.selector);
+          if (el) {
+            defaults[f.id] = f.type === "url" ? (el.getAttribute("src") || "") : (el.textContent?.trim() || "");
+          }
+        }
+      });
+
+      let state = { ...defaults };
+      try {
+        const stored = JSON.parse(localStorage.getItem(storageKey) || "{}");
+        state = { ...state, ...stored };
+      } catch (err) {
+        console.warn("Admin state parse error", err);
+      }
+
+      const applyField = (field, value) => {
+        if (field.apply) { field.apply(value); return; }
+        if (!field.selector) return;
+        const el = document.querySelector(field.selector);
+        if (!el) return;
+        if (field.type === "url") {
+          el.setAttribute("src", value || el.getAttribute("src") || "");
+        } else {
+          el.textContent = value;
+        }
+      };
+
+      Object.entries(state).forEach(([key, val]) => {
+        const f = fields.find(x => x.id === key);
+        if (f) applyField(f, val);
+      });
+
+      const renderFields = () => {
+        listEl.innerHTML = "";
+        fields.forEach(f => {
+          const wrap = document.createElement("div");
+          wrap.className = "field";
+          const label = document.createElement("label");
+          label.textContent = f.label;
+          label.setAttribute("for", `admin-${f.id}`);
+          const input = f.type === "textarea" ? document.createElement("textarea") : document.createElement("input");
+          input.id = `admin-${f.id}`;
+          input.dataset.id = f.id;
+          if (f.type && f.type !== "textarea") input.type = f.type;
+          if (f.type === "textarea") input.rows = 2;
+          input.value = state[f.id] ?? "";
+          wrap.append(label, input);
+          listEl.appendChild(wrap);
+        });
+      };
+
+      const togglePanel = (show) => {
+        panel.classList.toggle("show", show);
+      };
+
+      toggle.addEventListener("click", () => togglePanel(true));
+      closeBtn?.addEventListener("click", () => togglePanel(false));
+
+      saveBtn?.addEventListener("click", () => {
+        const inputs = listEl.querySelectorAll("input, textarea");
+        inputs.forEach(inp => {
+          state[inp.dataset.id] = inp.value;
+          const f = fields.find(x => x.id === inp.dataset.id);
+          if (f) applyField(f, inp.value);
+        });
+        localStorage.setItem(storageKey, JSON.stringify(state));
+        togglePanel(false);
+      });
+
+      resetBtn?.addEventListener("click", () => {
+        state = { ...defaults };
+        Object.entries(state).forEach(([key, val]) => {
+          const f = fields.find(x => x.id === key);
+          if (f) applyField(f, val);
+        });
+        localStorage.removeItem(storageKey);
+        renderFields();
+      });
+
+      exportBtn?.addEventListener("click", async () => {
+        const data = JSON.stringify(state, null, 2);
+        if (navigator.clipboard) {
+          await navigator.clipboard.writeText(data);
+          exportBtn.textContent = "Copied";
+          setTimeout(() => exportBtn.textContent = "Export", 1200);
+        } else {
+          alert(data);
+        }
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") togglePanel(false);
+      });
+
+      renderFields();
+    })();
   </script>
-  <script type="application/ld+json">
-  {
+  <script type='application/ld+json'>
+{
     "@context": "https://schema.org",
     "@type": "PrintingService",
     "name": "SK Graphics",
@@ -1092,3 +1391,28 @@
   </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
