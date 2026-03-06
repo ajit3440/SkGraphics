@@ -27,19 +27,61 @@
       --gray: #2c2c2f;
       --muted: #8d9096;
       --surface: #f6f7fb;
+      --card: #ffffff;
+      --card-border: #eceef3;
+      --text: #0f1114;
       --line: rgba(255, 255, 255, 0.05);
       --shadow: 0 18px 40px rgba(0,0,0,0.22);
+    }
+    body.theme-dark {
+      --surface: #0d0f13;
+      --card: #171a21;
+      --card-border: #252a33;
+      --text: #f2f4f8;
+      --muted: #9ba2b0;
+      --line: rgba(255,255,255,0.08);
     }
     * { box-sizing: border-box; }
     body {
       font-family: 'Poppins', sans-serif;
       background: var(--surface);
-      color: #0f1114;
+      color: var(--text);
       scroll-behavior: smooth;
     }
     a { text-decoration: none; }
     .nav-link { color: #111; font-weight: 500; }
     .nav-link:hover, .nav-link:focus { color: var(--red); }
+    body.theme-dark .navbar { background: #12141a !important; }
+    body.theme-dark .navbar-brand { color: #f2f4f8 !important; }
+    body.theme-dark .nav-link { color: #f2f4f8; }
+    body.theme-dark .nav-link:hover { color: var(--red); }
+    /* shop */
+    .product-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      box-shadow: 0 10px 22px rgba(0,0,0,0.08);
+      overflow: hidden;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    .product-card img { width: 100%; height: 170px; object-fit: cover; }
+    .product-card .body { padding: 14px 14px 16px; flex: 1; display: flex; flex-direction: column; gap: 6px; }
+    .product-card .price { color: var(--red); font-weight: 700; }
+    .cart-box {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 88px;
+    }
+    .cart-list { list-style: none; padding: 0; margin: 0; max-height: 340px; overflow-y: auto; }
+    .cart-list li { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 0; border-bottom: 1px dashed var(--card-border); }
+    .cart-actions button { min-width: 28px; }
+    .badge-tag { background: rgba(225,0,0,0.08); color: var(--red); }
     .btn-red {
       background: var(--red);
       color: #fff;
@@ -47,6 +89,7 @@
       box-shadow: 0 12px 26px rgba(225,0,0,0.28);
     }
     .btn-red:hover { background: var(--red-dark); color: #fff; }
+    body.theme-dark .text-muted { color: var(--muted) !important; }
     /* hero */
     .hero {
       position: relative;
@@ -122,12 +165,12 @@
     }
     /* services grid */
     .service-card {
-      background: #fff;
+      background: var(--card);
       border-radius: 12px;
       padding: 22px 20px;
       height: 100%;
       box-shadow: 0 10px 26px rgba(0,0,0,0.08);
-      border: 1px solid #eceef3;
+      border: 1px solid var(--card-border);
       transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
     .service-card:hover {
@@ -186,21 +229,21 @@
     .service-lists i { font-size: 14px; color: #fff; }
     /* portfolio */
     .portfolio-card {
-      background: #fff;
+      background: var(--card);
       border-radius: 12px;
       overflow: hidden;
       box-shadow: 0 10px 24px rgba(0,0,0,0.1);
-      border: 1px solid #eceef3;
+      border: 1px solid var(--card-border);
     }
     .portfolio-card img { width: 100%; display: block; }
-    .portfolio-card .p-3 { background: #fff; }
+    .portfolio-card .p-3 { background: var(--card); }
     /* process */
     .step {
-      background: #fff;
+      background: var(--card);
       border-radius: 12px;
       padding: 18px 16px;
       box-shadow: 0 10px 26px rgba(0,0,0,0.08);
-      border: 1px solid #eceef3;
+      border: 1px solid var(--card-border);
       height: 100%;
     }
     .step .badge {
@@ -208,10 +251,10 @@
     }
     /* testimonials */
     .testimonial {
-      background: #fff;
+      background: var(--card);
       border-radius: 12px;
       padding: 18px 18px 14px;
-      border: 1px solid #eceef3;
+      border: 1px solid var(--card-border);
       box-shadow: 0 10px 26px rgba(0,0,0,0.08);
       height: 100%;
     }
@@ -242,11 +285,11 @@
       .hero-content { padding: 36px 26px; }
       .side-pill { display: none; }
     }
-  </style>
+</style>
 </head>
-<body>
+<body data-bs-spy="scroll" data-bs-target="#mainNav" data-bs-offset="90" tabindex="0">
   <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg bg-white shadow-sm sticky-top">
+  <nav class="navbar navbar-expand-lg bg-white shadow-sm sticky-top" id="mainNav">
     <div class="container">
       <a class="navbar-brand d-flex align-items-center gap-2 fw-bold text-dark" href="#">
         <span class="logo-box" style="width:38px;height:38px; border-radius:10px; background:#e10000; position:relative; overflow:hidden;">
@@ -262,9 +305,17 @@
           <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
           <li class="nav-item"><a class="nav-link" href="#deals">Categories</a></li>
           <li class="nav-item"><a class="nav-link" href="#portfolio">Work</a></li>
+          <li class="nav-item"><a class="nav-link" href="#shop">Shop</a></li>
           <li class="nav-item"><a class="nav-link" href="#process">Process</a></li>
           <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
         </ul>
+        <div class="d-flex align-items-center gap-2 ms-lg-3 mt-2 mt-lg-0">
+          <select class="form-select form-select-sm" id="langSelect" style="width:130px;">
+            <option value="en" selected>English</option>
+            <option value="hi">हिंदी</option>
+          </select>
+          <button class="btn btn-sm btn-outline-dark" id="themeToggle" type="button" aria-label="Toggle theme"><i class="bi bi-moon"></i></button>
+        </div>
       </div>
     </div>
   </nav>
@@ -274,18 +325,18 @@
     <section class="hero mt-3" id="top">
       <div class="hero-content row align-items-center g-4">
         <div class="col-lg-7">
-          <div class="hero-badge"><i class="bi bi-palette"></i> Graphic Design • Printing • Digital</div>
-          <h1>Print-perfect designs that make your brand impossible to ignore.</h1>
-          <p class="lead">From wedding cards to large-format signage and digital campaigns, we craft cohesive visuals, premium materials, and sharp prints that stay true to your story.</p>
+          <div class="hero-badge" data-i18n="hero_badge"><i class="bi bi-palette"></i> Graphic Design • Printing • Digital</div>
+          <h1 data-i18n="hero_title">Print-perfect designs that make your brand impossible to ignore.</h1>
+          <p class="lead" data-i18n="hero_subtitle">From wedding cards to large-format signage and digital campaigns, we craft cohesive visuals, premium materials, and sharp prints that stay true to your story.</p>
           <div class="d-flex flex-wrap gap-3">
-            <a class="btn btn-red px-4 py-2" href="#contact">Get a Quote</a>
-            <a class="btn btn-outline-light px-4 py-2 border-0" href="#portfolio">View Recent Work</a>
+            <a class="btn btn-red px-4 py-2" href="#contact" data-i18n="cta_quote">Get a Quote</a>
+            <a class="btn btn-outline-light px-4 py-2 border-0" href="#portfolio" data-i18n="cta_work">View Recent Work</a>
           </div>
           <div class="hero-card mt-4">
             <div class="logo-box"></div>
             <div class="text">
-              <div class="fw-semibold">Sumit · Graphic Designer</div>
-              <div class="small text-white-50">78145-69533 • sumitprince493@gmail.com</div>
+              <div class="fw-semibold">Sumit &middot; Graphic Designer</div>
+              <div class="small text-white-50">78145-69533 &bull; sumitprince493@gmail.com</div>
             </div>
           </div>
         </div>
@@ -295,12 +346,18 @@
               <div class="bg-danger text-white rounded-circle d-flex align-items-center justify-content-center" style="width:52px;height:52px;"><i class="bi bi-person-fill fs-4"></i></div>
               <div>
                 <div class="fw-bold fs-5">Sumit</div>
-                <div class="text-muted small">Graphic Designer</div>
+              <div class="text-muted small">Graphic Designer</div>
               </div>
             </div>
             <ul class="list-unstyled mt-3 mb-0">
-              <li class="d-flex align-items-center gap-2 py-2 border-bottom"><i class="bi bi-telephone-fill text-danger"></i><span>78145-69533, 8847560927</span></li>
-              <li class="d-flex align-items-center gap-2 py-2 border-bottom"><i class="bi bi-envelope-fill text-danger"></i><span>sumitprince493@gmail.com</span></li>
+              <li class="d-flex align-items-center gap-2 py-2 border-bottom flex-wrap">
+                <i class="bi bi-telephone-fill text-danger"></i><span class="me-2">78145-69533, 8847560927</span>
+                <button class="btn btn-sm btn-outline-danger copy-btn" type="button" data-copy="78145-69533, 8847560927">Copy</button>
+              </li>
+              <li class="d-flex align-items-center gap-2 py-2 border-bottom flex-wrap">
+                <i class="bi bi-envelope-fill text-danger"></i><span class="me-2">sumitprince493@gmail.com</span>
+                <button class="btn btn-sm btn-outline-danger copy-btn" type="button" data-copy="sumitprince493@gmail.com">Copy</button>
+              </li>
               <li class="d-flex align-items-center gap-2 py-2"><i class="bi bi-geo-alt-fill text-danger"></i><span>#6327/A, Sector 56, Chd.</span></li>
             </ul>
           </div>
@@ -311,15 +368,15 @@
     <!-- Pricing -->
     <section class="pb-5" id="pricing">
       <div class="d-flex align-items-center gap-3 mb-3">
-        <span class="section-title">Transparent pricing</span>
-        <span class="text-muted small">Starting ranges; we confirm final quotes after specs.</span>
+        <span class="section-title" data-i18n="section_pricing">Transparent pricing</span>
+        <span class="text-muted small" data-i18n="section_pricing_note">Starting ranges; we confirm final quotes after specs.</span>
       </div>
       <div class="row g-4">
         <div class="col-md-6 col-lg-4">
           <div class="service-card h-100">
             <div class="icon"><i class="bi bi-person-vcard"></i></div>
             <h5 class="fw-semibold mb-1">Cards & Stationery</h5>
-            <div class="fw-bold fs-4 text-danger mb-1">₹2.5 / card</div>
+            <div class="fw-bold fs-4 text-danger mb-1">&#8377;2.5 / card</div>
             <div class="text-muted small mb-3">Visiting cards (300gsm), letterheads, envelopes, invites.</div>
             <ul class="text-muted small ps-3 mb-3">
               <li>Double-sided, full color</li>
@@ -333,7 +390,7 @@
           <div class="service-card h-100 border border-danger-subtle">
             <div class="icon"><i class="bi bi-easel"></i></div>
             <h5 class="fw-semibold mb-1">Large Format</h5>
-            <div class="fw-bold fs-4 text-danger mb-1">₹45 / sq.ft</div>
+            <div class="fw-bold fs-4 text-danger mb-1">&#8377;45 / sq.ft</div>
             <div class="text-muted small mb-3">Flex, vinyl, sunboard, standees, backdrops.</div>
             <ul class="text-muted small ps-3 mb-3">
               <li>Outdoor-grade inks</li>
@@ -347,7 +404,7 @@
           <div class="service-card h-100">
             <div class="icon"><i class="bi bi-globe"></i></div>
             <h5 class="fw-semibold mb-1">Digital & Web</h5>
-            <div class="fw-bold fs-4 text-danger mb-1">₹9,999 / site</div>
+            <div class="fw-bold fs-4 text-danger mb-1">&#8377;9,999 / site</div>
             <div class="text-muted small mb-3">Landing pages, brochure sites, banners, social kits.</div>
             <ul class="text-muted small ps-3 mb-3">
               <li>Responsive layout</li>
@@ -364,8 +421,8 @@
     <!-- Service pillars -->
     <section class="py-5" id="services">
       <div class="d-flex align-items-center justify-content-between flex-wrap gap-3 mb-3">
-        <span class="section-title">What we deliver</span>
-        <a class="text-decoration-none fw-semibold text-danger" href="#deals">See all categories →</a>
+        <span class="section-title" data-i18n="section_services">What we deliver</span>
+        <a class="text-decoration-none fw-semibold text-danger" href="#deals" data-i18n="link_categories">See all categories →</a>
       </div>
       <div class="row g-4">
         <div class="col-md-6 col-lg-3">
@@ -403,42 +460,76 @@
       </div>
     </section>
 
+    <!-- Shop -->
+    <section class="py-5" id="shop">
+      <div class="d-flex align-items-center justify-content-between flex-wrap gap-3 mb-3">
+        <span class="section-title">Shop popular items</span>
+        <span class="text-muted small">Add to cart and send with your quote.</span>
+      </div>
+      <div class="row g-4">
+        <div class="col-lg-8">
+          <div class="row g-4" id="shopGrid"></div>
+        </div>
+        <div class="col-lg-4">
+          <div class="cart-box">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h6 class="fw-semibold mb-0">Cart</h6>
+              <button class="btn btn-sm btn-outline-danger" id="clearCart" type="button">Clear</button>
+            </div>
+            <ul class="cart-list" id="cartList"></ul>
+            <div class="d-flex justify-content-between fw-semibold mt-2">
+              <span>Total</span><span id="cartTotal">&#8377;0</span>
+            </div>
+            <a class="btn btn-red w-100 mt-3" href="#followup">Checkout with quote</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Detailed categories (original list) -->
     <section id="deals" class="pb-5">
       <div class="services-card">
         <div class="side-pill left"></div>
         <div class="side-pill right"></div>
         <div class="d-flex justify-content-center mb-2">
-          <span class="ribbon">We Deals in :</span>
+          <span class="ribbon" data-i18n="ribbon_deals">We Deals in :</span>
+        </div>
+        <div class="px-2 pb-2">
+          <label class="text-muted small">Filter services</label>
+          <div class="input-group input-group-sm">
+            <span class="input-group-text bg-dark text-white border-0"><i class="bi bi-search"></i></span>
+            <input type="text" class="form-control border-0" id="dealsFilter" placeholder="Type to search (e.g. vinyl)">
+          </div>
         </div>
         <div class="row service-lists gx-4 gy-2">
           <div class="col-md-6">
             <ul>
-              <li><i class="bi bi-caret-right-fill"></i>Wedding Cards</li>
-              <li><i class="bi bi-caret-right-fill"></i>Visiting Cards</li>
-              <li><i class="bi bi-caret-right-fill"></i>Bill Books</li>
-              <li><i class="bi bi-caret-right-fill"></i>Flex</li>
-              <li><i class="bi bi-caret-right-fill"></i>Sunboard</li>
-              <li><i class="bi bi-caret-right-fill"></i>Vinyl</li>
-              <li><i class="bi bi-caret-right-fill"></i>Letter Heads</li>
-              <li><i class="bi bi-caret-right-fill"></i>Pamphlets</li>
-              <li><i class="bi bi-caret-right-fill"></i>Hindi/Punjabi Typing</li>
+              <li><i class="bi bi-caret-right-fill"></i><span class="service-item">Wedding Cards</span></li>
+              <li><i class="bi bi-caret-right-fill"></i><span class="service-item">Visiting Cards</span></li>
+              <li><i class="bi bi-caret-right-fill"></i><span class="service-item">Bill Books</span></li>
+              <li><i class="bi bi-caret-right-fill"></i><span class="service-item">Flex</span></li>
+              <li><i class="bi bi-caret-right-fill"></i><span class="service-item">Sunboard</span></li>
+              <li><i class="bi bi-caret-right-fill"></i><span class="service-item">Vinyl</span></li>
+              <li><i class="bi bi-caret-right-fill"></i><span class="service-item">Letter Heads</span></li>
+              <li><i class="bi bi-caret-right-fill"></i><span class="service-item">Pamphlets</span></li>
+              <li><i class="bi bi-caret-right-fill"></i><span class="service-item">Hindi/Punjabi Typing</span></li>
             </ul>
           </div>
           <div class="col-md-6">
             <ul>
-              <li><i class="bi bi-caret-right-fill"></i>Brochures</li>
-              <li><i class="bi bi-caret-right-fill"></i>Leaflet</li>
-              <li><i class="bi bi-caret-right-fill"></i>Menu Cards</li>
-              <li><i class="bi bi-caret-right-fill"></i>Stamps</li>
-              <li><i class="bi bi-caret-right-fill"></i>T-shirt Printing</li>
-              <li><i class="bi bi-caret-right-fill"></i>Computer Designing</li>
-              <li><i class="bi bi-caret-right-fill"></i>Screen Printing</li>
-              <li><i class="bi bi-caret-right-fill"></i>Pamphlet Distribution</li>
-              <li><i class="bi bi-caret-right-fill"></i>Website Making</li>
+              <li><i class="bi bi-caret-right-fill"></i><span class="service-item">Brochures</span></li>
+              <li><i class="bi bi-caret-right-fill"></i><span class="service-item">Leaflet</span></li>
+              <li><i class="bi bi-caret-right-fill"></i><span class="service-item">Menu Cards</span></li>
+              <li><i class="bi bi-caret-right-fill"></i><span class="service-item">Stamps</span></li>
+              <li><i class="bi bi-caret-right-fill"></i><span class="service-item">T-shirt Printing</span></li>
+              <li><i class="bi bi-caret-right-fill"></i><span class="service-item">Computer Designing</span></li>
+              <li><i class="bi bi-caret-right-fill"></i><span class="service-item">Screen Printing</span></li>
+              <li><i class="bi bi-caret-right-fill"></i><span class="service-item">Pamphlet Distribution</span></li>
+              <li><i class="bi bi-caret-right-fill"></i><span class="service-item">Website Making</span></li>
             </ul>
           </div>
         </div>
+        <div class="px-3 pb-2 text-warning small d-none" id="noResults">No services match that search.</div>
       </div>
     </section>
 
@@ -559,14 +650,63 @@
           </div>
         </div>
       </div>
+      <div class="d-flex gap-3 mt-3">
+        <button class="btn btn-red px-3" id="prevTestimonial" aria-label="Previous testimonial"><i class="bi bi-chevron-left"></i></button>
+        <button class="btn btn-red px-3" id="nextTestimonial" aria-label="Next testimonial"><i class="bi bi-chevron-right"></i></button>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="pb-5" id="faq">
+      <div class="d-flex align-items-center gap-3 mb-3">
+        <span class="section-title">FAQ</span>
+      </div>
+      <div class="accordion" id="faqAccordion">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="faq1">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1c" aria-expanded="true" aria-controls="faq1c">
+              What is your usual turnaround time?
+            </button>
+          </h2>
+          <div id="faq1c" class="accordion-collapse collapse show" aria-labelledby="faq1" data-bs-parent="#faqAccordion">
+            <div class="accordion-body text-muted">
+              Standard print jobs (cards, brochures) take 2–4 business days after artwork approval. Large-format and special finishes may add 1–2 days. Rush jobs available on request.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="faq2">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2c" aria-expanded="false" aria-controls="faq2c">
+              Can you help with content and translations?
+            </button>
+          </h2>
+          <div id="faq2c" class="accordion-collapse collapse" aria-labelledby="faq2" data-bs-parent="#faqAccordion">
+            <div class="accordion-body text-muted">
+              Yes. We assist with copywriting and Hindi/Punjabi typing. Provide key points and we’ll craft concise, print-ready content.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="faq3">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3c" aria-expanded="false" aria-controls="faq3c">
+              Do you deliver or install?
+            </button>
+          </h2>
+          <div id="faq3c" class="accordion-collapse collapse" aria-labelledby="faq3" data-bs-parent="#faqAccordion">
+            <div class="accordion-body text-muted">
+              We offer local delivery and on-site installation for flex, vinyl, and sunboard jobs within the Chandigarh Tricity region.
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Contact -->
     <section id="contact" class="pb-4">
       <div class="cta d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-3">
         <div>
-          <div class="fw-bold fs-5">Ready to start?</div>
-          <div class="text-white-50 small">Share your requirement and we’ll respond within one business day.</div>
+          <div class="fw-bold fs-5" data-i18n="cta_ready">Ready to start?</div>
+          <div class="text-white-50 small" data-i18n="cta_ready_sub">Share your requirement and we’ll respond within one business day.</div>
         </div>
         <div class="d-flex flex-column flex-sm-row gap-2 align-items-sm-center">
           <a class="btn btn-light px-4" href="mailto:sumitprince493@gmail.com"><i class="bi bi-envelope-fill me-2"></i>Email Us</a>
@@ -581,8 +721,8 @@
         <div class="col-lg-6">
           <div class="service-card h-100">
             <div class="icon"><i class="bi bi-chat-left-dots"></i></div>
-            <h5 class="fw-semibold">Tell us about your project</h5>
-            <p class="text-muted small mb-0">Share a few details and we’ll call or email back with a tailored estimate and timeline.</p>
+            <h5 class="fw-semibold" data-i18n="form_title">Tell us about your project</h5>
+            <p class="text-muted small mb-0" data-i18n="form_subtitle">Share a few details and we’ll call or email back with a tailored estimate and timeline.</p>
           </div>
         </div>
         <div class="col-lg-6">
@@ -657,6 +797,11 @@
     </div>
   </footer>
 
+  <!-- Back to top -->
+  <button id="backTop" class="btn btn-danger rounded-circle" type="button" aria-label="Back to top" style="position:fixed; right:16px; bottom:78px; z-index:1050; width:46px; height:46px; display:none;">
+    <i class="bi bi-arrow-up-short fs-4"></i>
+  </button>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
     // Client-side validation for follow-up form
@@ -672,6 +817,253 @@
         }, false);
       });
     })();
+
+    // Simple testimonial carousel (manual)
+    (() => {
+      const cards = Array.from(document.querySelectorAll('#testimonials .testimonial'));
+      let index = 0;
+      const show = (i) => cards.forEach((c, idx) => c.style.display = idx === i ? 'block' : 'none');
+      if (cards.length) {
+        show(index);
+        document.getElementById('prevTestimonial')?.addEventListener('click', () => {
+          index = (index - 1 + cards.length) % cards.length;
+          show(index);
+        });
+        document.getElementById('nextTestimonial')?.addEventListener('click', () => {
+          index = (index + 1) % cards.length;
+          show(index);
+        });
+      }
+    })();
+
+    // Floating contact bar
+    (() => {
+      const bar = document.createElement('div');
+      bar.innerHTML = `
+        <div class="d-flex align-items-center gap-2">
+          <a class="btn btn-danger btn-sm" href="tel:7814569533"><i class="bi bi-telephone-fill me-1"></i>Call</a>
+          <a class="btn btn-outline-light btn-sm text-danger bg-white" href="https://wa.me/917814569533" target="_blank" rel="noopener"><i class="bi bi-whatsapp me-1"></i>WhatsApp</a>
+          <a class="btn btn-dark btn-sm" href="#followup"><i class="bi bi-pencil-square me-1"></i>Quote</a>
+        </div>`;
+      Object.assign(bar.style, {
+        position: 'fixed',
+        right: '16px',
+        bottom: '16px',
+        zIndex: 1050,
+        background: '#ffffff',
+        boxShadow: '0 12px 28px rgba(0,0,0,0.18)',
+        borderRadius: '12px',
+        padding: '10px 12px'
+      });
+      document.body.appendChild(bar);
+    })();
+
+    // Filter services (deals list)
+    (() => {
+      const input = document.getElementById('dealsFilter');
+      const items = Array.from(document.querySelectorAll('#deals .service-item')).map(span => span.closest('li'));
+      const noResults = document.getElementById('noResults');
+      if (!input || !items.length) return;
+      input.addEventListener('input', () => {
+        const q = input.value.trim().toLowerCase();
+        let visible = 0;
+        items.forEach(li => {
+          const match = li.textContent.toLowerCase().includes(q);
+          li.style.display = match ? 'flex' : 'none';
+          if (match) visible++;
+        });
+        if (noResults) noResults.classList.toggle('d-none', visible !== 0);
+      });
+    })();
+
+    // Copy buttons for contact info
+    (() => {
+      const buttons = document.querySelectorAll('.copy-btn');
+      if (!navigator.clipboard || !buttons.length) return;
+      buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const text = btn.getAttribute('data-copy') || '';
+          navigator.clipboard.writeText(text).then(() => {
+            btn.textContent = 'Copied';
+            setTimeout(() => btn.textContent = 'Copy', 1200);
+          });
+        });
+      });
+    })();
+
+    // Back to top toggle
+    (() => {
+      const btn = document.getElementById('backTop');
+      if (!btn) return;
+      window.addEventListener('scroll', () => {
+        btn.style.display = window.scrollY > 300 ? 'inline-flex' : 'none';
+      });
+      btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    })();
+
+    // Theme toggle with localStorage
+    (() => {
+      const btn = document.getElementById('themeToggle');
+      const body = document.body;
+      const stored = localStorage.getItem('theme');
+      if (stored === 'dark') body.classList.add('theme-dark');
+      const setIcon = () => {
+        btn.innerHTML = body.classList.contains('theme-dark') ? '<i class="bi bi-sun"></i>' : '<i class="bi bi-moon"></i>';
+      };
+      setIcon();
+      btn?.addEventListener('click', () => {
+        body.classList.toggle('theme-dark');
+        localStorage.setItem('theme', body.classList.contains('theme-dark') ? 'dark' : 'light');
+        setIcon();
+      });
+    })();
+
+    // Language switcher (EN / HI)
+    (() => {
+      const map = {
+        en: {
+          hero_badge: 'Graphic Design • Printing • Digital',
+          hero_title: 'Print-perfect designs that make your brand impossible to ignore.',
+          hero_subtitle: 'From wedding cards to large-format signage and digital campaigns, we craft cohesive visuals, premium materials, and sharp prints that stay true to your story.',
+          cta_quote: 'Get a Quote',
+          cta_work: 'View Recent Work',
+          section_services: 'What we deliver',
+          link_categories: 'See all categories →',
+          ribbon_deals: 'We Deals in :',
+          section_pricing: 'Transparent pricing',
+          section_pricing_note: 'Starting ranges; we confirm final quotes after specs.',
+          form_title: 'Tell us about your project',
+          form_subtitle: 'Share a few details and we’ll call or email back with a tailored estimate and timeline.',
+          cta_ready: 'Ready to start?',
+          cta_ready_sub: 'Share your requirement and we’ll respond within one business day.'
+        },
+        hi: {
+          hero_badge: 'ग्राफिक डिजाइन • प्रिंटिंग • डिजिटल',
+          hero_title: 'ऐसे प्रिंट और डिजाइन जो आपके ब्रांड को अलग दिखाएं।',
+          hero_subtitle: 'वेडिंग कार्ड से लेकर बड़े फ्लेक्स और डिजिटल कैंपेन तक, हम आपके ब्रांड की कहानी को सटीक डिज़ाइन और प्रीमियम प्रिंट से पेश करते हैं।',
+          cta_quote: 'कोटेशन लें',
+          cta_work: 'हाल का काम देखें',
+          section_services: 'हम क्या देते हैं',
+          link_categories: 'सारी श्रेणियाँ देखें →',
+          ribbon_deals: 'हम कार्य करते हैं :',
+          section_pricing: 'पारदर्शी कीमतें',
+          section_pricing_note: 'शुरुआती रेंज; अंतिम कोट सामग्री और मात्रा पर निर्भर है।',
+          form_title: 'अपने प्रोजेक्ट के बारे में बताएं',
+          form_subtitle: 'कुछ विवरण भेजें, हम आपको अनुमान और टाइमलाइन के साथ कॉल/ईमेल करेंगे।',
+          cta_ready: 'शुरू करने के लिए तैयार?',
+          cta_ready_sub: 'अपनी आवश्यकता साझा करें, हम एक कार्य-दिवस में उत्तर देंगे।'
+        }
+      };
+      const select = document.getElementById('langSelect');
+      const stored = localStorage.getItem('lang');
+      if (stored && select) select.value = stored;
+      const applyLang = (lang) => {
+        const dict = map[lang] || map.en;
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+          const key = el.getAttribute('data-i18n');
+          if (dict[key]) el.textContent = dict[key];
+        });
+        localStorage.setItem('lang', lang);
+      };
+      select?.addEventListener('change', () => applyLang(select.value));
+      applyLang(select?.value || 'en');
+    })();
+
+    // Shop data + cart
+    (() => {
+      const products = [
+        { id: 'card-premium', name: 'Premium Visiting Cards (300gsm)', price: 2.5, unit: 'per card', tag: 'Cards', img: 'https://picsum.photos/seed/card/480/320' },
+        { id: 'wedding-invite', name: 'Wedding Invitation Set', price: 45, unit: 'per set', tag: 'Invites', img: 'https://picsum.photos/seed/invite/480/320' },
+        { id: 'brochure', name: 'Tri-fold Brochure (170gsm)', price: 8, unit: 'per brochure', tag: 'Brochure', img: 'https://picsum.photos/seed/brochure/480/320' },
+        { id: 'flex', name: 'Outdoor Flex Printing', price: 45, unit: 'per sq.ft', tag: 'Flex', img: 'https://picsum.photos/seed/flex/480/320' },
+        { id: 'vinyl', name: 'Vinyl with Lamination', price: 65, unit: 'per sq.ft', tag: 'Vinyl', img: 'https://picsum.photos/seed/vinyl/480/320' },
+        { id: 'sunboard', name: 'Sunboard Signage', price: 120, unit: 'per sq.ft', tag: 'Sunboard', img: 'https://picsum.photos/seed/sunboard/480/320' },
+        { id: 'stamp', name: 'Self-Inking Stamp', price: 320, unit: 'per pc', tag: 'Stamp', img: 'https://picsum.photos/seed/stamp/480/320' },
+        { id: 'tshirt', name: 'Custom T-shirt Print', price: 299, unit: 'per pc', tag: 'T-shirt', img: 'https://picsum.photos/seed/tshirt/480/320' }
+      ];
+      const grid = document.getElementById('shopGrid');
+      if (!grid) return;
+      const cartKey = 'sk_cart';
+      let cart = JSON.parse(localStorage.getItem(cartKey) || '[]');
+      const format = (n) => `₹${n.toLocaleString('en-IN', { maximumFractionDigits: 2 })}`;
+      const save = () => localStorage.setItem(cartKey, JSON.stringify(cart));
+      const renderCart = () => {
+        const list = document.getElementById('cartList');
+        const totalEl = document.getElementById('cartTotal');
+        if (!list || !totalEl) return;
+        list.innerHTML = '';
+        let total = 0;
+        cart.forEach(item => {
+          total += item.price * item.qty;
+          const li = document.createElement('li');
+          li.innerHTML = `
+            <div>
+              <div class="fw-semibold small">${item.name}</div>
+              <div class="text-muted small">${format(item.price)} × ${item.qty}</div>
+            </div>
+            <div class="cart-actions d-flex align-items-center gap-1">
+              <button class="btn btn-outline-secondary btn-sm" data-act="dec" data-id="${item.id}">-</button>
+              <span class="small">${item.qty}</span>
+              <button class="btn btn-outline-secondary btn-sm" data-act="inc" data-id="${item.id}">+</button>
+              <button class="btn btn-outline-danger btn-sm" data-act="del" data-id="${item.id}">&times;</button>
+            </div>`;
+          list.appendChild(li);
+        });
+        totalEl.textContent = format(total);
+        list.querySelectorAll('button').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            const id = btn.getAttribute('data-id');
+            const act = btn.getAttribute('data-act');
+            const idx = cart.findIndex(x => x.id === id);
+            if (idx === -1) return;
+            if (act === 'inc') cart[idx].qty++;
+            if (act === 'dec') cart[idx].qty = Math.max(1, cart[idx].qty - 1);
+            if (act === 'del') cart.splice(idx, 1);
+            save(); renderCart();
+          });
+        });
+      };
+      const add = (p) => {
+        const found = cart.find(x => x.id === p.id);
+        if (found) { found.qty++; } else { cart.push({ ...p, qty: 1 }); }
+        save(); renderCart();
+      };
+      const clearBtn = document.getElementById('clearCart');
+      clearBtn?.addEventListener('click', () => { cart = []; save(); renderCart(); });
+      // build product cards
+      products.forEach(p => {
+        const col = document.createElement('div');
+        col.className = 'col-md-6';
+        col.innerHTML = `
+          <div class="product-card">
+            <img src="${p.img}" alt="${p.name}">
+            <div class="body">
+              <div class="d-flex justify-content-between align-items-center">
+                <h6 class="fw-semibold mb-0">${p.name}</h6>
+                <span class="badge badge-tag">${p.tag}</span>
+              </div>
+              <div class="price">${format(p.price)} <span class="text-muted small">(${p.unit})</span></div>
+              <button class="btn btn-red btn-sm mt-auto" data-add="${p.id}">Add to cart</button>
+            </div>
+          </div>`;
+        grid.appendChild(col);
+      });
+      grid.querySelectorAll('[data-add]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = btn.getAttribute('data-add');
+          const p = products.find(x => x.id === id);
+          if (p) add(p);
+        });
+      });
+      renderCart();
+    })();
+
+
+    // Refresh scrollspy after load
+    document.addEventListener('DOMContentLoaded', () => {
+      const scrollSpy = new bootstrap.ScrollSpy(document.body, { target: '#mainNav', offset: 90 });
+      window.addEventListener('resize', () => scrollSpy.refresh());
+    });
   </script>
   <script type="application/ld+json">
   {
