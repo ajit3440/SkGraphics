@@ -1105,13 +1105,13 @@
         wrap.appendChild(bubble);
         messages.appendChild(wrap);
         messages.scrollTop = messages.scrollHeight;
+        return wrap;
       };
 
       const callLLM = async (question) => {
         const { openrouter, openai } = getKeys();
         const system = `You are SK Graphics' AI assistant for quick pricing and timeline queries. Phone: ${phoneText}. Email: ${emailText}. Pricing: visiting cards ₹2.5/card (300gsm, 200+ pcs); flex ₹45/sq.ft; vinyl ₹65/sq.ft; sunboard ₹120/sq.ft; tees screen print from ₹80/print (100+); DTF from ₹120/print; wedding invites usually 2–4 business days. Delivery: Chandigarh/Mohali/Panchkula/Zirakpur; same-day for flex/vinyl if booked before 1pm. Keep answers short and actionable; ask for missing specs like size/quantity/deadline.`;
-        const payload = {
-          model: 'gpt-4o-mini',
+        const basePayload = {
           messages: [
             { role: 'system', content: system },
             { role: 'user', content: question }
@@ -1119,8 +1119,31 @@
           max_tokens: 250,
           temperature: 0.4
         };
-        try {
-          if (openrouter) {
+
+        // Try OpenAI first, then OpenRouter. Failures fall through to the next.
+        if (openai) {
+          try {
+            const res = await fetch('https://api.openai.com/v1/chat/completions', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${openai}`
+              },
+              body: JSON.stringify({ model: 'gpt-4o-mini', ...basePayload })
+            });
+            if (res.ok) {
+              const data = await res.json();
+              return data?.choices?.[0]?.message?.content?.trim();
+            }
+            // log and continue to next provider
+            console.warn('OpenAI fallback', await res.text());
+          } catch (err) {
+            console.warn('OpenAI error', err);
+          }
+        }
+
+        if (openrouter) {
+          try {
             const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
               method: 'POST',
               headers: {
@@ -1129,30 +1152,18 @@
                 'HTTP-Referer': window.location.origin,
                 'X-Title': document.title || 'SK Graphics'
               },
-              body: JSON.stringify({ ...payload, model: 'openrouter/auto' })
+              body: JSON.stringify({ model: 'openrouter/auto', ...basePayload })
             });
-            if (!res.ok) throw new Error(await res.text());
-            const data = await res.json();
-            return data?.choices?.[0]?.message?.content?.trim();
+            if (res.ok) {
+              const data = await res.json();
+              return data?.choices?.[0]?.message?.content?.trim();
+            }
+            console.warn('OpenRouter fallback', await res.text());
+          } catch (err) {
+            console.warn('OpenRouter error', err);
           }
-          if (openai) {
-            const res = await fetch('https://api.openai.com/v1/chat/completions', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${openai}`
-              },
-              body: JSON.stringify(payload)
-            });
-            if (!res.ok) throw new Error(await res.text());
-            const data = await res.json();
-            return data?.choices?.[0]?.message?.content?.trim();
-          }
-          return null;
-        } catch (err) {
-          console.warn('LLM error', err);
-          return null;
         }
+        return null;
       };
 
       const bestAnswer = (question) => {
@@ -1197,18 +1208,20 @@
         appendMessage('user', text);
         input.value = '';
         const pending = appendMessage('bot', 'Thinking...');
+        const pendingBubble = pending.querySelector('.bubble');
         (async () => {
           const live = await callLLM(text);
+          console.debug();
           if (live) {
-            messages.lastChild.querySelector('.bubble').textContent = live;
+            pendingBubble.textContent = live;
           } else {
-            messages.lastChild.querySelector('.bubble').textContent = bestAnswer(text);
+            pendingBubble.textContent = bestAnswer(text);
           }
         })();
       });
 
       // Seed greeting
-      appendMessage('bot', `Hi! Ask about pricing, timelines, or share specs. You can also call ${phoneText}. Use the Keys button to add OPENAI_API_KEY or OPENROUTER_API_KEY (stored only in this browser).`);
+      appendMessage('bot', `Hi! Ask about pricing, timelines, or share specs. You can also call ${phoneText}. I’ll try OpenAI first when a key is set; if none, I’ll use a free quick-answer fallback.`);
     })();
   </script>
   <script>
@@ -1774,9 +1787,6 @@
   </script>
 </body>
 </html>
-
-
-
 
 
 
