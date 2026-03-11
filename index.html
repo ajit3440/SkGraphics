@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="google-site-verification" content="VIupnikkN5xQ_Defar9AsgPj9Z2KsMfYUybYv5gX5ac" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SK Graphics | Design & Printing Studio</title>
   <meta name="description" content="SK Graphics offers graphic design, offset & digital printing, large-format signage, and website design in Chandigarh. Fast turnaround with premium quality.">
@@ -279,6 +278,112 @@
       margin-top: 36px;
     }
     footer a { color: #f1f1f1; }
+    /* chat */
+    .chat-launch {
+      border: none;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 14px;
+      background: var(--red);
+      color: #fff;
+      box-shadow: 0 12px 24px rgba(0,0,0,0.18);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .chat-launch .dot { width: 10px; height: 10px; border-radius: 50%; background: #12d66b; box-shadow: 0 0 0 6px rgba(18,214,107,0.2); }
+    .chat-panel {
+      position: fixed;
+      right: 14px;
+      bottom: 86px;
+      width: min(380px, 92vw);
+      background: var(--card);
+      color: var(--text);
+      border-radius: 14px;
+      box-shadow: 0 24px 50px rgba(0,0,0,0.25);
+      border: 1px solid var(--card-border);
+      overflow: hidden;
+      transform: translateY(30px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      z-index: 1069;
+      display: flex;
+      flex-direction: column;
+    }
+    .chat-panel.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    .chat-header {
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 100%);
+      color: #fff;
+    }
+    .chat-title { font-weight: 700; letter-spacing: 0.1px; }
+    .chat-actions-row { display: flex; align-items: center; gap: 8px; }
+    .chat-actions-row .btn { padding: 6px 10px; }
+    .chat-body {
+      padding: 12px 12px 0;
+      display: grid;
+      gap: 10px;
+      max-height: 360px;
+      overflow-y: auto;
+      background: var(--surface);
+    }
+    .chat-msg { display: grid; gap: 6px; font-size: 14px; }
+    .chat-msg .bubble {
+      padding: 10px 12px;
+      border-radius: 12px;
+      line-height: 1.4;
+      width: fit-content;
+      max-width: 92%;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+    }
+    .chat-msg.bot .bubble {
+      background: #ffffff;
+      border: 1px solid var(--card-border);
+    }
+    body.theme-dark .chat-msg.bot .bubble { background: var(--card); }
+    .chat-msg.user { justify-items: end; }
+    .chat-msg.user .bubble {
+      background: var(--red);
+      color: #fff;
+      border-top-right-radius: 4px;
+    }
+    .chat-meta { font-size: 11px; color: var(--muted); }
+    .chat-input {
+      padding: 10px;
+      border-top: 1px solid var(--card-border);
+      background: var(--card);
+      display: grid;
+      gap: 8px;
+    }
+    .chat-input textarea {
+      resize: none;
+      height: 70px;
+      border-radius: 10px;
+      border: 1px solid var(--card-border);
+      padding: 10px 12px;
+      background: var(--surface);
+      color: inherit;
+    }
+    .chat-quick { display: flex; flex-wrap: wrap; gap: 6px; }
+    .chat-quick button {
+      border: 1px solid var(--card-border);
+      background: #fff;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+    }
+    body.theme-dark .chat-quick button { background: var(--card); }
+    .chat-actions { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+    @media (max-width: 520px) {
+      .chat-panel { right: 8px; left: 8px; width: auto; }
+    }
     /* responsive tweaks */
     @media (max-width: 992px) {
       .hero-content { padding: 48px 32px; }
@@ -403,6 +508,11 @@
             <option value="hi">हिंदी</option>
           </select>
           <button class="btn btn-sm btn-outline-dark" id="themeToggle" type="button" aria-label="Toggle theme"><i class="bi bi-moon"></i></button>
+          <button class="chat-launch btn-sm ms-2" id="chatToggle" type="button" aria-label="Open chat">
+            <span class="dot"></span>
+            <span>Chat with us</span>
+            <i class="bi bi-chat-dots-fill"></i>
+          </button>
         </div>
       </div>
     </div>
@@ -815,26 +925,26 @@
         </div>
         <div class="col-lg-6">
           <div class="service-card h-100">
-            <form class="needs-validation" novalidate>
+            <form class="needs-validation" id="projectForm" novalidate>
               <div class="row g-3">
                 <div class="col-12">
                   <label class="form-label fw-semibold">Full name</label>
-                  <input type="text" class="form-control" placeholder="Your name" required>
+                  <input type="text" class="form-control" name="name" placeholder="Your name" required>
                   <div class="invalid-feedback">Please enter your name.</div>
                 </div>
                 <div class="col-md-6">
                   <label class="form-label fw-semibold">Phone</label>
-                  <input type="tel" class="form-control" placeholder="e.g. 78145-69533" required>
+                  <input type="tel" class="form-control" name="phone" placeholder="e.g. 78145-69533" required>
                   <div class="invalid-feedback">Phone is required.</div>
                 </div>
                 <div class="col-md-6">
                   <label class="form-label fw-semibold">Email</label>
-                  <input type="email" class="form-control" placeholder="you@example.com" required>
+                  <input type="email" class="form-control" name="email" placeholder="you@example.com" required>
                   <div class="invalid-feedback">Valid email required.</div>
                 </div>
                 <div class="col-12">
                   <label class="form-label fw-semibold">Service</label>
-                  <select class="form-select" required>
+                  <select class="form-select" name="service" required>
                     <option value="">Choose one</option>
                     <option>Visiting / Wedding Cards</option>
                     <option>Brochures / Pamphlets</option>
@@ -848,11 +958,14 @@
                 </div>
                 <div class="col-12">
                   <label class="form-label fw-semibold">Project notes</label>
-                  <textarea class="form-control" id="projectNotes" rows="3" placeholder="Quantity, size, material, deadline..." required></textarea>
+                  <textarea class="form-control" id="projectNotes" name="notes" rows="3" placeholder="Quantity, size, material, deadline..." required></textarea>
                   <div class="invalid-feedback">Please add a short note.</div>
                 </div>
                 <div class="col-12 d-flex justify-content-end">
                   <button class="btn btn-red px-4" type="submit">Submit</button>
+                </div>
+                <div class="col-12">
+                  <div id="formStatus" class="text-muted small"></div>
                 </div>
               </div>
             </form>
@@ -907,7 +1020,197 @@
     </footer>
   </div>
 
+  <div class="chat-panel" id="chatPanel" aria-live="polite">
+    <div class="chat-header">
+      <div>
+        <div class="chat-title">Instant help</div>
+        <div class="small opacity-75">Design & printing assistant</div>
+      </div>
+      <div class="chat-actions-row">
+        <button class="btn btn-sm btn-light" id="chatKeys" type="button" title="Set API keys">Keys</button>
+        <button class="btn btn-sm btn-outline-light" id="chatClose" type="button">Close</button>
+      </div>
+    </div>
+    <div class="chat-body" id="chatMessages" role="log" aria-label="Chat messages"></div>
+    <div class="chat-input">
+      <div class="chat-quick" id="chatQuick">
+        <button type="button" data-ask="Share your latest visiting card prices">Visiting card price</button>
+        <button type="button" data-ask="Do you deliver flex prints in Chandigarh?">Delivery area</button>
+        <button type="button" data-ask="How fast can you print wedding invites?">Turnaround time</button>
+      </div>
+      <form id="chatForm">
+        <textarea id="chatInput" placeholder="Ask about pricing, materials, timelines..." required></textarea>
+        <div class="chat-actions">
+          <small class="text-muted">Real responses, no waiting.</small>
+          <button class="btn btn-red btn-sm px-3" type="submit">Send</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Lightweight AI-style chat (no backend)
+    (() => {
+      const toggle = document.getElementById('chatToggle');
+      const panel = document.getElementById('chatPanel');
+      const closeBtn = document.getElementById('chatClose');
+      const keysBtn = document.getElementById('chatKeys');
+      const messages = document.getElementById('chatMessages');
+      const form = document.getElementById('chatForm');
+      const input = document.getElementById('chatInput');
+      const quick = document.getElementById('chatQuick');
+      if (!toggle || !panel || !messages || !form || !input) return;
+
+      const phoneText = document.querySelector('[data-bind=\"phoneDisplay\"]')?.textContent?.trim() || '78145-69533';
+      const emailText = document.querySelector('[data-bind=\"emailText\"]')?.textContent?.trim() || 'sumitprince493@gmail.com';
+
+      const keyStore = 'sk_chat_keys_v1';
+      let keyState = {};
+      try { keyState = JSON.parse(localStorage.getItem(keyStore) || '{}'); } catch (_) { keyState = {}; }
+
+      const getKeys = () => ({
+        openai: keyState.openai || window.OPENAI_API_KEY || '',
+        openrouter: keyState.openrouter || window.OPENROUTER_API_KEY || ''
+      });
+
+      const promptForKeys = () => {
+        const existing = getKeys();
+        const oa = prompt('Paste your OPENAI_API_KEY (kept in this browser only):', existing.openai || '');
+        if (oa !== null) keyState.openai = oa.trim();
+        const or = prompt('Paste your OPENROUTER_API_KEY (kept in this browser only):', keyState.openrouter || '');
+        if (or !== null) keyState.openrouter = or.trim();
+        localStorage.setItem(keyStore, JSON.stringify(keyState));
+        appendMessage('bot', 'Keys updated locally. I will use live AI if the keys are valid. No keys are sent anywhere else.');
+      };
+
+      const knowledge = [
+        { keywords: ['visiting', 'card'], answer: 'Visiting cards start at ₹2.5 per card (300gsm) with matte/gloss lamination. Minimum 200 pcs. Premium textures, spot UV, and rounded corners are available on request.' },
+        { keywords: ['wedding', 'invite'], answer: 'Wedding invites are usually ready in 2–4 business days once the design is approved. Foiling/embossing adds 1–2 days. Share quantity + size for an exact quote.' },
+        { keywords: ['flex', 'vinyl', 'sunboard'], answer: 'Flex: ₹45/sq.ft, Vinyl: ₹65/sq.ft, Sunboard with print: ₹120/sq.ft. Outdoor-grade inks; mounting and installation can be added.' },
+        { keywords: ['tshirt', 't-shirt', 'fabric', 'screen'], answer: 'For tees/hoodies, single-color screen prints start at ₹80/print (100+ pcs). DTF full-color starts at ₹120/print for small runs. Garment sourcing available.' },
+        { keywords: ['deliver', 'pickup', 'chandigarh', 'mohali', 'zirakpur'], answer: 'We deliver across Chandigarh, Mohali, Panchkula, Zirakpur. Same-day courier for most flex/vinyl jobs placed before 1 pm.' },
+        { keywords: ['turnaround', 'time', 'urgent', 'express'], answer: 'Common TAT: visiting cards 24–48 hrs, flex/vinyl same-day for queued jobs, brochures 2–3 days. Share your deadline—we prioritize urgent print runs.' },
+        { keywords: ['website', 'web', 'ui', 'digital'], answer: 'We design responsive websites and landing pages. Starter one-page site from ₹9,999; multi-page brand sites usually 2–3 weeks including copy and basic SEO.' },
+        { keywords: ['file', 'artwork', 'size', 'bleed', 'format'], answer: 'Best to send PDF/X-1a or high-res PNG/JPG. Keep 3mm bleed on cards/brochures, text 4mm inside the trim. We can fix files if needed.' },
+        { keywords: ['payment', 'upi', 'gst'], answer: 'We accept UPI, cards, bank transfer. GST invoices available. 50% advance for new projects, balance on print approval/dispatch.' }
+      ];
+
+      const appendMessage = (role, text) => {
+        const wrap = document.createElement('div');
+        wrap.className = `chat-msg ${role}`;
+        const bubble = document.createElement('div');
+        bubble.className = 'bubble';
+        bubble.textContent = text;
+        wrap.appendChild(bubble);
+        messages.appendChild(wrap);
+        messages.scrollTop = messages.scrollHeight;
+      };
+
+      const callLLM = async (question) => {
+        const { openrouter, openai } = getKeys();
+        const system = `You are SK Graphics' AI assistant for quick pricing and timeline queries. Phone: ${phoneText}. Email: ${emailText}. Pricing: visiting cards ₹2.5/card (300gsm, 200+ pcs); flex ₹45/sq.ft; vinyl ₹65/sq.ft; sunboard ₹120/sq.ft; tees screen print from ₹80/print (100+); DTF from ₹120/print; wedding invites usually 2–4 business days. Delivery: Chandigarh/Mohali/Panchkula/Zirakpur; same-day for flex/vinyl if booked before 1pm. Keep answers short and actionable; ask for missing specs like size/quantity/deadline.`;
+        const payload = {
+          model: 'gpt-4o-mini',
+          messages: [
+            { role: 'system', content: system },
+            { role: 'user', content: question }
+          ],
+          max_tokens: 250,
+          temperature: 0.4
+        };
+        try {
+          if (openrouter) {
+            const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${openrouter}`,
+                'HTTP-Referer': window.location.origin,
+                'X-Title': document.title || 'SK Graphics'
+              },
+              body: JSON.stringify({ ...payload, model: 'openrouter/auto' })
+            });
+            if (!res.ok) throw new Error(await res.text());
+            const data = await res.json();
+            return data?.choices?.[0]?.message?.content?.trim();
+          }
+          if (openai) {
+            const res = await fetch('https://api.openai.com/v1/chat/completions', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${openai}`
+              },
+              body: JSON.stringify(payload)
+            });
+            if (!res.ok) throw new Error(await res.text());
+            const data = await res.json();
+            return data?.choices?.[0]?.message?.content?.trim();
+          }
+          return null;
+        } catch (err) {
+          console.warn('LLM error', err);
+          return null;
+        }
+      };
+
+      const bestAnswer = (question) => {
+        const q = question.toLowerCase();
+        let best = { score: 0, answer: null };
+        knowledge.forEach(item => {
+          const score = item.keywords.reduce((s, kw) => s + (q.includes(kw) ? 1 : 0), 0);
+          if (score > best.score) best = { score, answer: item.answer };
+        });
+        if (best.score > 0) return best.answer;
+        if (q.includes('@') || q.match(/[0-9]{6,}/)) {
+          return 'Thanks for the details! We\'ll save this and call back shortly. Anything else you want us to note?';
+        }
+        return `I’ll route this to the right person. Can you share quantity, size, and deadline? You can also call ${phoneText} or email ${emailText} for a faster response.`;
+      };
+
+      const openPanel = () => {
+        panel.classList.add('show');
+        setTimeout(() => input.focus(), 50);
+      };
+      const closePanel = () => panel.classList.remove('show');
+
+      toggle.addEventListener('click', () => {
+        panel.classList.toggle('show');
+        if (panel.classList.contains('show')) input.focus();
+      });
+      closeBtn?.addEventListener('click', closePanel);
+      keysBtn?.addEventListener('click', promptForKeys);
+
+      quick?.addEventListener('click', (e) => {
+        const target = e.target;
+        if (target instanceof HTMLElement && target.dataset.ask) {
+          input.value = target.dataset.ask;
+          form.requestSubmit();
+        }
+      });
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const text = input.value.trim();
+        if (!text) return;
+        appendMessage('user', text);
+        input.value = '';
+        const pending = appendMessage('bot', 'Thinking...');
+        (async () => {
+          const live = await callLLM(text);
+          if (live) {
+            messages.lastChild.querySelector('.bubble').textContent = live;
+          } else {
+            messages.lastChild.querySelector('.bubble').textContent = bestAnswer(text);
+          }
+        })();
+      });
+
+      // Seed greeting
+      appendMessage('bot', `Hi! Ask about pricing, timelines, or share specs. You can also call ${phoneText}. Use the Keys button to add OPENAI_API_KEY or OPENROUTER_API_KEY (stored only in this browser).`);
+    })();
+  </script>
   <script>
     // Client-side validation for follow-up form
     (() => {
@@ -1365,6 +1668,85 @@
       renderFields();
     })();
   </script>
+  <script>
+    // API wiring: sends the project form to the protected Next.js endpoints.
+    (() => {
+      const API_BASE = window.API_BASE || "";
+      const credentials = {
+        email: "admin@skgraphics.local",
+        password: "StrongPass123!",
+      };
+      let cachedToken = null;
+
+      const statusEl = document.getElementById("formStatus");
+      const form = document.getElementById("projectForm");
+
+      const setStatus = (msg, type = "muted") => {
+        if (!statusEl) return;
+        statusEl.textContent = msg;
+        statusEl.className = `text-${type} small`;
+      };
+
+      const login = async () => {
+        if (cachedToken) return cachedToken;
+        const res = await fetch(`${API_BASE}/api/auth/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(credentials),
+        });
+        if (!res.ok) {
+          throw new Error("Authentication failed");
+        }
+        const data = await res.json();
+        cachedToken = data.token;
+        return cachedToken;
+      };
+
+      const submitLead = async (payload) => {
+        const token = await login();
+        const res = await fetch(`${API_BASE}/api/skgraphics`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(payload),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) {
+          throw new Error(data.error || "API error");
+        }
+        return data;
+      };
+
+      if (form) {
+        form.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          if (!form.checkValidity()) {
+            form.classList.add("was-validated");
+            return;
+          }
+          const formData = new FormData(form);
+          const payload = {
+            name: formData.get("name")?.toString().trim(),
+            phone: formData.get("phone")?.toString().trim(),
+            email: formData.get("email")?.toString().trim(),
+            service: formData.get("service"),
+            notes: formData.get("notes")?.toString().trim(),
+          };
+          try {
+            setStatus("Sending...", "muted");
+            const result = await submitLead(payload);
+            setStatus(`Saved request #${result.id}. We will call you soon.`, "success");
+            form.reset();
+            form.classList.remove("was-validated");
+          } catch (err) {
+            setStatus(err.message || "Could not send. Try again.", "danger");
+          }
+        });
+      }
+    })();
+  </script>
   <script type='application/ld+json'>
 {
     "@context": "https://schema.org",
@@ -1392,22 +1774,6 @@
   </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
