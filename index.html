@@ -1511,6 +1511,31 @@
     document.addEventListener('DOMContentLoaded', () => {
       const scrollSpy = new bootstrap.ScrollSpy(document.body, { target: '#mainNav', offset: 90 });
       window.addEventListener('resize', () => scrollSpy.refresh());
+
+      // Collapse mobile nav after a link click
+      const nav = document.getElementById('nav');
+      const toggler = document.querySelector('.navbar-toggler');
+      if (nav && toggler) {
+        const links = nav.querySelectorAll('.nav-link');
+        links.forEach(link => {
+          link.addEventListener('click', () => {
+            if (nav.classList.contains('show')) {
+              const instance = bootstrap.Collapse.getInstance(nav) || new bootstrap.Collapse(nav, { toggle: false });
+              instance.hide();
+            }
+          });
+        });
+
+        // Close when clicking outside the open menu
+        document.addEventListener('click', (e) => {
+          const target = e.target;
+          const isInsideNav = nav.contains(target) || toggler.contains(target);
+          if (!isInsideNav && nav.classList.contains('show')) {
+            const instance = bootstrap.Collapse.getInstance(nav) || new bootstrap.Collapse(nav, { toggle: false });
+            instance.hide();
+          }
+        });
+      }
     });
       </script>
   <script>
@@ -1787,8 +1812,6 @@
   </script>
 </body>
 </html>
-
-
 
 
 
