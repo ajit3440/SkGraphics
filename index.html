@@ -385,6 +385,91 @@
     }
     body.theme-dark .chat-quick button { background: var(--card); }
     .chat-actions { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+    /* 3D works */
+    .work-3d-wrap {
+      position: relative;
+    }
+    .work-3d-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+      perspective: 1200px;
+      perspective-origin: 50% 50%;
+    }
+    .work-3d-card {
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 18px 32px rgba(0,0,0,0.16);
+      border: 1px solid var(--card-border);
+      background: var(--card);
+      will-change: transform;
+      transform: perspective(1200px) rotateY(0deg) rotateX(0deg);
+    }
+    .work-3d-card img {
+      width: 100%;
+      display: block;
+      transform: translateZ(30px);
+    }
+    .work-3d-meta {
+      position: absolute;
+      inset: auto 0 0 0;
+      padding: 14px;
+      background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.55) 70%);
+      color: #fff;
+      transform: translateZ(40px);
+    }
+    .work-3d-card:hover {
+      box-shadow: 0 24px 44px rgba(0,0,0,0.22);
+    }
+    .work-3d-card.active {
+      transform: rotateY(10deg) rotateX(-8deg) translateZ(12px);
+      box-shadow: 0 24px 44px rgba(0,0,0,0.26);
+    }
+    /* designer */
+    .designer-canvas {
+      width: 100%;
+      max-width: 960px;
+      background: #0f1114;
+      border-radius: 10px;
+      border: 1px solid var(--card-border);
+      box-shadow: 0 12px 26px rgba(0,0,0,0.18);
+    }
+    .designer-toolbar .form-control,
+    .designer-toolbar .form-select,
+    .designer-toolbar .form-range {
+      min-width: 0;
+    }
+    .designer-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--card-border);
+      background: var(--card);
+      font-size: 12px;
+    }
+    .layer-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .layer-badge {
+      cursor: pointer;
+      padding: 6px 10px;
+      border-radius: 10px;
+      border: 1px solid var(--card-border);
+      background: var(--surface);
+      font-size: 12px;
+    }
+    .layer-badge.active {
+      border-color: var(--red);
+      color: var(--red);
+      background: rgba(225,0,0,0.08);
+    }
     @media (max-width: 520px) {
       .chat-panel { right: 8px; left: 8px; width: auto; }
     }
@@ -512,6 +597,9 @@
             <option value="hi">हिंदी</option>
           </select>
           <button class="btn btn-sm btn-outline-dark" id="themeToggle" type="button" aria-label="Toggle theme"><i class="bi bi-moon"></i></button>
+          <button class="btn btn-sm btn-danger ms-2" data-bs-toggle="modal" data-bs-target="#designerModal" type="button">
+            <i class="bi bi-magic"></i> Create your design
+          </button>
           <button class="chat-launch btn-sm ms-2" id="chatToggle" type="button" aria-label="Open chat">
             <span class="dot"></span>
             <span>Chat with us</span>
@@ -978,6 +1066,39 @@
       </div>
     </section>
 
+    <!-- 3D showcase -->
+    <section class="pb-5" id="showcase3d">
+      <div class="d-flex align-items-center gap-3 mb-3">
+        <span class="section-title">Recent work in 3D</span>
+        <span class="text-muted small">Hover or tap to feel the depth.</span>
+      </div>
+      <div class="work-3d-wrap">
+        <div class="work-3d-grid">
+          <div class="work-3d-card" data-tilt>
+            <img src="https://picsum.photos/seed/portfolio1/720/520" alt="Brochure mockup - Chandigarh" loading="lazy">
+            <div class="work-3d-meta">
+              <div class="fw-semibold">Tri-fold brochure</div>
+              <div class="small">Brand rollout · Chandigarh</div>
+            </div>
+          </div>
+          <div class="work-3d-card" data-tilt>
+            <img src="https://picsum.photos/seed/portfolio2/720/520" alt="Flex signage mockup - Zirakpur" loading="lazy">
+            <div class="work-3d-meta">
+              <div class="fw-semibold">Flex storefront</div>
+              <div class="small">Retail signage · Zirakpur</div>
+            </div>
+          </div>
+          <div class="work-3d-card" data-tilt>
+            <img src="https://picsum.photos/seed/portfolio3/720/520" alt="Wedding invite mockup - Mohali" loading="lazy">
+            <div class="work-3d-meta">
+              <div class="fw-semibold">Wedding invites</div>
+              <div class="small">Foil + texture · Mohali</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- SEO: Local FAQs -->
     <section class="pb-5" id="faqs">
       <div class="d-flex align-items-center gap-3 mb-3">
@@ -1107,6 +1228,137 @@
           <button class="btn btn-red btn-sm px-3" type="submit">Send</button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- Designer modal -->
+  <div class="modal fade" id="designerModal" tabindex="-1" aria-labelledby="designerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div>
+            <h5 class="modal-title" id="designerModalLabel">Create your design</h5>
+            <small class="text-muted">Upload an image, add text, adjust size/position, then download.</small>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row g-3 designer-toolbar align-items-end">
+            <div class="col-md-3">
+              <label class="form-label fw-semibold">Upload image</label>
+              <input type="file" class="form-control" id="designImage" accept="image/*">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label fw-semibold">Text</label>
+              <div class="input-group">
+                <input type="text" class="form-control" id="designText" placeholder="Your text">
+                <button class="btn btn-outline-secondary" id="designAddText" type="button" title="Add text layer"><i class="bi bi-plus"></i></button>
+                <button class="btn btn-outline-secondary" id="designAddImageLayer" type="button" title="Add image layer"><i class="bi bi-image"></i></button>
+              </div>
+            </div>
+            <div class="col-md-2">
+              <label class="form-label fw-semibold">Color</label>
+              <input type="color" class="form-control form-control-color" id="designColor" value="#ffffff" title="Choose text color">
+            </div>
+            <div class="col-md-2">
+              <label class="form-label fw-semibold">Size</label>
+              <input type="range" class="form-range" id="designSize" min="16" max="96" value="38">
+            </div>
+            <div class="col-md-2">
+              <label class="form-label fw-semibold">Download</label><br>
+              <button class="btn btn-dark w-100" id="designDownload" type="button"><i class="bi bi-download"></i> Download PNG</button>
+            </div>
+            <div class="col-md-2">
+              <label class="form-label fw-semibold">Layer</label>
+              <select class="form-select" id="designLayer"></select>
+            </div>
+            <div class="col-md-2">
+              <label class="form-label fw-semibold">Canvas size</label>
+              <select class="form-select" id="designPreset">
+                <option value="visiting">Visiting card (3.5 × 2 in)</option>
+                <option value="wedding">Wedding invite (5 × 7 in)</option>
+                <option value="a4">A4 (8.27 × 11.69 in)</option>
+                <option value="square">Square 1080 × 1080</option>
+                <option value="custom" selected>Match image</option>
+              </select>
+            </div>
+          </div>
+          <div class="row mt-3 g-3 designer-toolbar align-items-end">
+            <div class="col-md-3">
+              <label class="form-label fw-semibold">Font</label>
+              <select class="form-select" id="designFont">
+                <option>Poppins</option>
+                <option>Playfair Display</option>
+                <option>Inter</option>
+                <option>Montserrat</option>
+                <option>Raleway</option>
+                <option>Courier New</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label fw-semibold">Stroke color</label>
+              <input type="color" class="form-control form-control-color" id="designStrokeColor" value="#000000">
+            </div>
+            <div class="col-md-2">
+              <label class="form-label fw-semibold">Stroke width</label>
+              <input type="range" class="form-range" id="designStrokeWidth" min="0" max="8" value="1">
+            </div>
+            <div class="col-md-2">
+              <label class="form-label fw-semibold">Rotation</label>
+              <input type="range" class="form-range" id="designRotate" min="-30" max="30" value="0">
+            </div>
+            <div class="col-md-2">
+              <label class="form-label fw-semibold">Shadow</label><br>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="designShadow" checked>
+                <label class="form-check-label" for="designShadow">On</label>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-3 g-3 designer-toolbar align-items-end">
+            <div class="col-md-3">
+              <label class="form-label fw-semibold">Position X</label>
+              <input type="range" class="form-range" id="designPosX" min="0" max="100" value="50">
+            </div>
+            <div class="col-md-3">
+              <label class="form-label fw-semibold">Position Y</label>
+              <input type="range" class="form-range" id="designPosY" min="0" max="100" value="50">
+            </div>
+            <div class="col-md-2">
+              <label class="form-label fw-semibold">Brightness</label>
+              <input type="range" class="form-range" id="designBright" min="50" max="150" value="100">
+            </div>
+            <div class="col-md-2">
+              <label class="form-label fw-semibold">Contrast</label>
+              <input type="range" class="form-range" id="designContrast" min="50" max="150" value="100">
+            </div>
+            <div class="col-md-2">
+              <label class="form-label fw-semibold">Saturation</label>
+              <input type="range" class="form-range" id="designSaturate" min="50" max="150" value="100">
+            </div>
+          </div>
+          <div class="row mt-2 g-3 designer-toolbar align-items-end">
+            <div class="col-md-2">
+              <label class="form-label fw-semibold">Blur</label>
+              <input type="range" class="form-range" id="designBlur" min="0" max="6" value="0">
+            </div>
+            <div class="col-md-2">
+              <label class="form-label fw-semibold">&nbsp;</label><br>
+              <button class="btn btn-outline-secondary w-100" id="designReset" type="button"><i class="bi bi-arrow-counterclockwise"></i> Reset</button>
+            </div>
+            <div class="col-md-8 d-flex align-items-center gap-2">
+              <span class="designer-chip">Tip: drag the text on the canvas to position it faster.</span>
+              <span class="designer-chip">Use rotation for angled labels.</span>
+            </div>
+          </div>
+          <div class="mt-3">
+            <canvas id="designCanvas" class="designer-canvas" aria-label="Design canvas"></canvas>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -1262,6 +1514,433 @@
           form.requestSubmit();
         }
       });
+
+      // Subtle tilt for 3D cards
+      document.querySelectorAll('[data-tilt]').forEach(card => {
+        const applyTilt = (x, y, pop = 8) => {
+          const clampedX = Math.max(-0.6, Math.min(0.6, x));
+          const clampedY = Math.max(-0.6, Math.min(0.6, y));
+          card.style.transform = `perspective(1200px) rotateY(${clampedX * 14}deg) rotateX(${ -clampedY * 12}deg) translateZ(${pop}px)`;
+        };
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = (e.clientX - rect.left) / rect.width - 0.5;
+          const y = (e.clientY - rect.top) / rect.height - 0.5;
+          applyTilt(x, y, 12);
+        });
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = 'perspective(1200px) rotateY(0deg) rotateX(0deg) translateZ(0)';
+        });
+        // Tap-to-tilt for touch devices
+        card.addEventListener('click', () => {
+          if (!('ontouchstart' in window)) return;
+          card.classList.toggle('active');
+          if (!card.classList.contains('active')) {
+            card.style.transform = 'perspective(1200px) rotateY(0deg) rotateX(0deg) translateZ(0)';
+          }
+        });
+      });
+
+      // Simple image + text designer
+      (() => {
+        const modal = document.getElementById('designerModal');
+        if (!modal) return;
+        const canvas = document.getElementById('designCanvas');
+        const ctx = canvas.getContext('2d');
+        const fileInput = document.getElementById('designImage');
+        const textInput = document.getElementById('designText');
+        const colorInput = document.getElementById('designColor');
+        const sizeInput = document.getElementById('designSize');
+        const posXInput = document.getElementById('designPosX');
+        const posYInput = document.getElementById('designPosY');
+        const addTextBtn = document.getElementById('designAddText');
+        const addImageBtn = document.getElementById('designAddImageLayer');
+        const layerSelect = document.getElementById('designLayer');
+        const presetSelect = document.getElementById('designPreset');
+        const fontInput = document.getElementById('designFont');
+        const strokeColorInput = document.getElementById('designStrokeColor');
+        const strokeWidthInput = document.getElementById('designStrokeWidth');
+        const rotateInput = document.getElementById('designRotate');
+        const shadowInput = document.getElementById('designShadow');
+        const brightInput = document.getElementById('designBright');
+        const contrastInput = document.getElementById('designContrast');
+        const saturateInput = document.getElementById('designSaturate');
+        const blurInput = document.getElementById('designBlur');
+        const resetBtn = document.getElementById('designReset');
+        const downloadBtn = document.getElementById('designDownload');
+
+        let img = new Image();
+        let imgLoaded = false;
+        canvas.width = 900;
+        canvas.height = 540;
+        const state = {
+          dragging: false,
+          dragOffsetX: 0,
+          dragOffsetY: 0,
+          dragLayer: null
+        };
+        const layers = [];
+        let currentLayer = null;
+
+        const createLayer = (text = 'Your brand text') => ({
+          id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now() + Math.random()),
+          text,
+          type: 'text',
+          color: '#ffffff',
+          size: 38,
+          font: 'Poppins',
+          strokeColor: '#000000',
+          strokeWidth: 1,
+          rotate: 0,
+          shadow: true,
+          x: 0.5,
+          y: 0.5,
+          opacity: 1
+        });
+
+        const createImageLayer = (src, w, h) => ({
+          id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now() + Math.random()),
+          type: 'image',
+          img: src,
+          width: w || 400,
+          height: h || 300,
+          x: 0.5,
+          y: 0.5,
+          rotate: 0,
+          opacity: 1
+        });
+
+        const refreshLayerSelect = () => {
+          layerSelect.innerHTML = '';
+          layers.forEach((l, idx) => {
+            const opt = document.createElement('option');
+            opt.value = l.id;
+            opt.textContent = `Text ${idx + 1}`;
+            layerSelect.appendChild(opt);
+          });
+          if (currentLayer) {
+            layerSelect.value = currentLayer.id;
+          }
+        };
+
+        const loadLayerToControls = (layer) => {
+          if (!layer) return;
+          textInput.value = layer.text;
+          colorInput.value = layer.color;
+          sizeInput.value = layer.size;
+          fontInput.value = layer.font;
+          strokeColorInput.value = layer.strokeColor;
+          strokeWidthInput.value = layer.strokeWidth;
+          rotateInput.value = layer.rotate;
+          shadowInput.checked = layer.shadow;
+          posXInput.value = Math.round(layer.x * 100);
+          posYInput.value = Math.round(layer.y * 100);
+        };
+
+        const writeControlsToLayer = () => {
+          if (!currentLayer) return;
+          currentLayer.text = textInput.value || '';
+          currentLayer.color = colorInput.value || '#fff';
+          currentLayer.size = parseInt(sizeInput.value || '38', 10);
+          currentLayer.font = fontInput.value || 'Poppins';
+          currentLayer.strokeColor = strokeColorInput.value || '#000';
+          currentLayer.strokeWidth = parseInt(strokeWidthInput.value || '0', 10);
+          currentLayer.rotate = parseInt(rotateInput.value || '0', 10);
+          currentLayer.shadow = shadowInput.checked;
+          currentLayer.x = (parseInt(posXInput.value, 10) || 0) / 100;
+          currentLayer.y = (parseInt(posYInput.value, 10) || 0) / 100;
+        };
+
+        const render = () => {
+          // background
+          ctx.fillStyle = '#11141a';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          const filterStr = `brightness(${brightInput.value || 100}%) contrast(${contrastInput.value || 100}%) saturate(${saturateInput.value || 100}%) blur(${blurInput.value || 0}px)`;
+          ctx.filter = filterStr;
+          if (imgLoaded) {
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          }
+          ctx.filter = 'none';
+          layers.forEach(layer => {
+            const angle = (layer.rotate || 0) * Math.PI / 180;
+            const x = layer.x * canvas.width;
+            const y = layer.y * canvas.height;
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.rotate(angle);
+            ctx.globalAlpha = layer.opacity ?? 1;
+
+            if (layer.type === 'image' && layer.imgObj) {
+              const w = layer.width || layer.imgObj.width;
+              const h = layer.height || layer.imgObj.height;
+              ctx.drawImage(layer.imgObj, -w / 2, -h / 2, w, h);
+            }
+
+            if (layer.type === 'text' && layer.text) {
+              const size = layer.size || 38;
+              ctx.fillStyle = layer.color || '#fff';
+              ctx.textAlign = 'center';
+              ctx.textBaseline = 'middle';
+              ctx.font = `700 ${size}px ${layer.font || 'Poppins'}, sans-serif`;
+              if (layer.shadow) {
+                ctx.shadowColor = 'rgba(0,0,0,0.55)';
+                ctx.shadowBlur = 12;
+                ctx.shadowOffsetX = 2;
+                ctx.shadowOffsetY = 2;
+              } else {
+                ctx.shadowColor = 'transparent';
+                ctx.shadowBlur = 0;
+              }
+              const strokeW = layer.strokeWidth || 0;
+              if (strokeW > 0) {
+                ctx.strokeStyle = layer.strokeColor || '#000';
+                ctx.lineWidth = strokeW;
+                ctx.strokeText(layer.text, 0, 0);
+              }
+              ctx.fillText(layer.text, 0, 0);
+            }
+            ctx.restore();
+          });
+        };
+
+        const fitCanvasToImage = () => {
+          if (presetSelect.value !== 'custom') return;
+          const maxW = modal.querySelector('.modal-body')?.clientWidth || 900;
+          let w = Math.min(maxW, img.naturalWidth || 900);
+          w = Math.max(480, w);
+          let h = w * ((img.naturalHeight || 540) / (img.naturalWidth || 900));
+          if (h > 620) {
+            const scale = 620 / h;
+            h *= scale;
+            w *= scale;
+          }
+          canvas.width = Math.round(w);
+          canvas.height = Math.round(h);
+        };
+
+        const applyPresetSize = () => {
+          const dpi = 300;
+          const presets = {
+            visiting: { w: 3.5, h: 2 },
+            wedding: { w: 5, h: 7 },
+            a4: { w: 8.27, h: 11.69 },
+            square: { w: 1080 / dpi, h: 1080 / dpi },
+          };
+          const val = presetSelect.value;
+          if (val === 'custom') {
+            fitCanvasToImage();
+            render();
+            return;
+          }
+          const p = presets[val];
+          if (!p) return;
+          canvas.width = Math.round(p.w * dpi);
+          canvas.height = Math.round(p.h * dpi);
+          render();
+        };
+
+        fileInput.addEventListener('change', (e) => {
+          const file = e.target.files?.[0];
+          if (!file) return;
+          const reader = new FileReader();
+          reader.onload = (evt) => {
+            img = new Image();
+            img.onload = () => {
+              imgLoaded = true;
+              fitCanvasToImage();
+              render();
+            };
+            img.src = evt.target.result;
+          };
+          reader.readAsDataURL(file);
+        });
+
+        [textInput, colorInput, sizeInput, posXInput, posYInput, fontInput, strokeColorInput, strokeWidthInput, rotateInput, shadowInput, brightInput, contrastInput, saturateInput, blurInput].forEach(el => {
+          el?.addEventListener('input', render);
+        });
+        presetSelect?.addEventListener('change', () => {
+          applyPresetSize();
+        });
+
+        downloadBtn?.addEventListener('click', () => {
+          const link = document.createElement('a');
+          link.download = 'skgraphics-design.png';
+          link.href = canvas.toDataURL('image/png');
+          link.click();
+        });
+
+        const reset = () => {
+          layers.length = 0;
+          currentLayer = createLayer('Your brand text');
+          layers.push(currentLayer);
+          brightInput.value = '100';
+          contrastInput.value = '100';
+          saturateInput.value = '100';
+          blurInput.value = '0';
+          refreshLayerSelect();
+          layerSelect.value = currentLayer.id;
+          loadLayerToControls(currentLayer);
+          render();
+        };
+        resetBtn?.addEventListener('click', reset);
+
+        modal.addEventListener('shown.bs.modal', () => {
+          if (!layers.length) reset();
+          render();
+        });
+
+        const selectLayerById = (id) => {
+          const found = layers.find(l => l.id === id);
+          if (found) {
+            currentLayer = found;
+            loadLayerToControls(currentLayer);
+            render();
+          }
+        };
+
+        layerSelect?.addEventListener('change', () => selectLayerById(layerSelect.value));
+
+        addTextBtn?.addEventListener('click', () => {
+          const layer = createLayer('New text');
+          layers.push(layer);
+          currentLayer = layer;
+          refreshLayerSelect();
+          layerSelect.value = layer.id;
+          loadLayerToControls(layer);
+          render();
+        });
+
+        addImageBtn?.addEventListener('click', () => {
+          const picker = document.createElement('input');
+          picker.type = 'file';
+          picker.accept = 'image/*';
+          picker.onchange = (e) => {
+            const file = e.target.files?.[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (evt) => {
+              const imgObj = new Image();
+              imgObj.onload = () => {
+                const layer = createImageLayer(evt.target.result, imgObj.naturalWidth, imgObj.naturalHeight);
+                layer.imgObj = imgObj;
+                layers.push(layer);
+                currentLayer = layer;
+                refreshLayerSelect();
+                layerSelect.value = layer.id;
+                loadLayerToControls(layer);
+                render();
+              };
+              imgObj.src = evt.target.result;
+            };
+            reader.readAsDataURL(file);
+          };
+          picker.click();
+        });
+
+        // Drag to move text
+        const hitText = (mx, my) => {
+          for (let i = layers.length - 1; i >= 0; i--) {
+            const l = layers[i];
+            if (!l.text) continue;
+            const size = l.size || 38;
+            ctx.font = `700 ${size}px ${l.font || 'Poppins'}, sans-serif`;
+            const metrics = ctx.measureText(l.text);
+            const width = metrics.width;
+            const height = size;
+            const x = l.x * canvas.width;
+            const y = l.y * canvas.height;
+            if (mx >= x - width / 2 && mx <= x + width / 2 && my >= y - height && my <= y + height / 2) {
+              return l;
+            }
+          }
+          return null;
+        };
+
+        canvas.addEventListener('mousedown', (e) => {
+          const rect = canvas.getBoundingClientRect();
+          const mx = e.clientX - rect.left;
+          const my = e.clientY - rect.top;
+          const hit = hitText(mx, my);
+          if (hit) {
+            currentLayer = hit;
+            refreshLayerSelect();
+            layerSelect.value = currentLayer.id;
+            loadLayerToControls(currentLayer);
+            state.dragging = true;
+            state.dragLayer = hit;
+            state.dragOffsetX = mx - hit.x * canvas.width;
+            state.dragOffsetY = my - hit.y * canvas.height;
+          }
+        });
+        canvas.addEventListener('mousemove', (e) => {
+          if (!state.dragging) return;
+          const rect = canvas.getBoundingClientRect();
+          const mx = e.clientX - rect.left;
+          const my = e.clientY - rect.top;
+          if (state.dragLayer) {
+            state.dragLayer.x = Math.min(1, Math.max(0, (mx - state.dragOffsetX) / canvas.width));
+            state.dragLayer.y = Math.min(1, Math.max(0, (my - state.dragOffsetY) / canvas.height));
+            if (state.dragLayer === currentLayer) {
+              posXInput.value = Math.round(state.dragLayer.x * 100);
+              posYInput.value = Math.round(state.dragLayer.y * 100);
+            }
+          }
+          render();
+        });
+        ['mouseup', 'mouseleave'].forEach(ev => canvas.addEventListener(ev, () => {
+          state.dragging = false;
+          state.dragLayer = null;
+        }));
+
+        // Touch drag
+        canvas.addEventListener('touchstart', (e) => {
+          const rect = canvas.getBoundingClientRect();
+          const touch = e.touches[0];
+          const mx = touch.clientX - rect.left;
+          const my = touch.clientY - rect.top;
+          const hit = hitText(mx, my);
+          if (hit) {
+            currentLayer = hit;
+            refreshLayerSelect();
+            layerSelect.value = currentLayer.id;
+            loadLayerToControls(currentLayer);
+            state.dragging = true;
+            state.dragLayer = hit;
+            state.dragOffsetX = mx - hit.x * canvas.width;
+            state.dragOffsetY = my - hit.y * canvas.height;
+          }
+        }, { passive: true });
+        canvas.addEventListener('touchmove', (e) => {
+          if (!state.dragging) return;
+          const rect = canvas.getBoundingClientRect();
+          const touch = e.touches[0];
+          const mx = touch.clientX - rect.left;
+          const my = touch.clientY - rect.top;
+          if (state.dragLayer) {
+            state.dragLayer.x = Math.min(1, Math.max(0, (mx - state.dragOffsetX) / canvas.width));
+            state.dragLayer.y = Math.min(1, Math.max(0, (my - state.dragOffsetY) / canvas.height));
+            if (state.dragLayer === currentLayer) {
+              posXInput.value = Math.round(state.dragLayer.x * 100);
+              posYInput.value = Math.round(state.dragLayer.y * 100);
+            }
+          }
+          render();
+        }, { passive: true });
+        canvas.addEventListener('touchend', () => {
+          state.dragging = false;
+          state.dragLayer = null;
+        }, { passive: true });
+
+        // Sync inputs back to layer on change
+        [textInput, colorInput, sizeInput, fontInput, strokeColorInput, strokeWidthInput, rotateInput, shadowInput, posXInput, posYInput].forEach(el => {
+          el?.addEventListener('input', () => {
+            writeControlsToLayer();
+            render();
+          });
+        });
+
+        reset();
+      })();
 
       form.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -1834,15 +2513,21 @@
             service: formData.get("service"),
             notes: formData.get("notes")?.toString().trim(),
           };
-          try {
-            setStatus("Sending...", "muted");
-            const result = await submitLead(payload);
-            setStatus(`Saved request #${result.id}. We will call you soon.`, "success");
-            form.reset();
-            form.classList.remove("was-validated");
-          } catch (err) {
-            setStatus(err.message || "Could not send. Try again.", "danger");
-          }
+          // Redirect to Gmail compose with prefilled fields
+          const subject = encodeURIComponent(`New enquiry: ${payload.service || "Printing/Design"} from ${payload.name || "Client"}`);
+          const bodyLines = [
+            `Name: ${payload.name || ""}`,
+            `Phone: ${payload.phone || ""}`,
+            `Email: ${payload.email || ""}`,
+            `Service: ${payload.service || ""}`,
+            `Notes: ${payload.notes || ""}`
+          ];
+          const body = encodeURIComponent(bodyLines.join("\n"));
+          const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=ajitsh000@gmail.com&su=${subject}&body=${body}`;
+          setStatus("Opening Gmail compose…", "success");
+          window.open(gmailUrl, "_blank");
+          form.reset();
+          form.classList.remove("was-validated");
         });
       }
     })();
